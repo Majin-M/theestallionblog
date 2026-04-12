@@ -1,0 +1,2473 @@
+{% extends 'base.html.twig' %}
+
+{# ============================================================
+PAGE : Megan Thee Stallion — The H-Town Hottie
+TEMPLATE : home/megan.html.twig
+DESCRIPTION : Page de présentation artistique et culturelle
+de Megan Thee Stallion. Couvre sa discographie,
+ses hits, ses collaborations, ses personas,
+son impact culturel et ses sections visuelles
+(outfits, nail art, cosplays).
+DÉPENDANCES :
+- Bootstrap 5.3 (CSS + JS)
+- Google Fonts : Anton, Poppins
+- AOS (Animate On Scroll) 2.3.1
+- color-modes.js (Bootstrap dark/light toggle)
+============================================================ #}
+
+{% block title %}Megan Thee Stallion · The H-Town Hottie{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="dark">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Site de présentation de Megan Thee Stallion — Albums, Hits et Collabs Internationales.">
+    <meta name="author" content="Design basé sur Bootstrap">
+    <title>Megan Thee Stallion · The H-Town Hottie</title>
+
+    <!-- ── Feuilles de style externes ── -->
+    <link href="https://getbootstrap.com/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- ── Script Bootstrap : gestion des thèmes clair/sombre ── -->
+    <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
+
+    <style>
+        /* ============================================================
+           VARIABLES CSS — Palette & Typographie
+           Centralise les couleurs et polices du projet.
+           ============================================================ */
+        :root {
+            --megan-black: #0a0a0a;
+            --megan-dark: #111111;
+            --megan-pink: #ff0050;
+            /* Couleur principale — accent agressif */
+            --megan-neon: #ff00cc;
+            /* Neon pour les glows */
+            --megan-grey: #b3b3b3;
+            /* Texte secondaire */
+            --megan-white: #ffffff;
+
+            --gradient-megan: linear-gradient(135deg, #ff0050, #ff00cc);
+
+            --font-headings: 'Anton', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        /* ============================================================
+           BASE — Reset & Globals
+           ============================================================ */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(circle at top, #111, #000);
+            color: var(--megan-grey);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .navbar-brand {
+            font-family: var(--font-headings);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        p {
+            color: var(--megan-grey);
+            line-height: 1.6;
+        }
+
+        .lead {
+            color: var(--megan-pink);
+            font-weight: 500;
+        }
+
+        .highlight {
+            color: var(--megan-pink);
+            font-weight: 600;
+        }
+
+        a,
+        button {
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--megan-pink);
+        }
+
+        /* ============================================================
+           THÈME SOMBRE (défaut)
+           ============================================================ */
+        [data-bs-theme="dark"] body {
+            background-color: #0f0f0f;
+            color: #e0e0e0;
+        }
+
+        [data-bs-theme="dark"] .card {
+            background-color: #1a1a1a;
+            border-color: #333;
+        }
+
+        [data-bs-theme="dark"] .section-title {
+            color: var(--megan-pink);
+        }
+
+        [data-bs-theme="dark"] .section-title::after {
+            background: #fff;
+        }
+
+        /* ============================================================
+           THÈME CLAIR
+           ============================================================ */
+        [data-bs-theme="light"] body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        [data-bs-theme="light"] .card {
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        [data-bs-theme="light"] .navbar {
+            background-color: #000 !important;
+        }
+
+        [data-bs-theme="light"] .section-title {
+            color: #cc0040;
+        }
+
+        [data-bs-theme="light"] .section-title::after {
+            background: #212529;
+        }
+
+        /* ============================================================
+           NAVIGATION
+           ============================================================ */
+        .navbar {
+            background: rgba(0, 0, 0, 0.9) !important;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand {
+            color: var(--megan-pink) !important;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+        }
+
+
+        /* ── Liens d'ancre dans le burger ── */
+        .nav-anchor {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #bbb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .nav-anchor:hover {
+            color: var(--megan-pink);
+            padding-left: 4px;
+        }
+
+        .nav-anchor-icon {
+            font-family: var(--font-headings);
+            font-size: 0.7rem;
+            color: var(--megan-pink);
+            opacity: 0.7;
+            min-width: 20px;
+        }
+
+        /* ── Liens sociaux dans le burger ── */
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #bbb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+
+        .social-link:hover {
+            color: var(--megan-pink);
+        }
+
+        .social-link svg {
+            flex-shrink: 0;
+        }
+
+        /* ============================================================
+           SECTION TITLE — Titre de section avec underline dégradé
+           ============================================================ */
+        .section-title {
+            font-size: 3rem;
+            color: white;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            margin-top: 10px;
+            background: var(--gradient-megan);
+            box-shadow: 0 0 15px var(--megan-neon);
+        }
+
+        /* ============================================================
+           BOUTON — Style Megan (gradient rose)
+           ============================================================ */
+        .btn-megan {
+            background: var(--gradient-megan);
+            border: none;
+            color: white;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+            transition: 0.3s;
+        }
+
+        .btn-megan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(255, 0, 127, 0.9);
+        }
+
+        .hero-buttons .btn {
+            border-radius: 50px;
+            padding: 12px 28px;
+        }
+
+        /* ============================================================
+           HERO SECTION
+           Plein écran avec image de fond + overlay sombre dégradé.
+           ============================================================ */
+        .hero-section {
+            min-height: 100vh;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.235), rgba(0, 0, 0, 0.797)),
+                url('https://pbs.twimg.com/media/Ga095MIaMAAJKQ9.jpg') center / cover no-repeat;
+            position: relative;
+        }
+
+        .hero-section .container {
+            margin-top: 25vh;
+        }
+
+        .hero-tag {
+            color: var(--megan-pink);
+            letter-spacing: 3px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .hero-title {
+            font-family: var(--font-headings);
+            font-size: clamp(1.5rem, 5.5vw, 4.5rem);
+            line-height: 0.9;
+            color: white;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 10px rgba(255, 0, 127, 0.7),
+                0 0 30px rgba(255, 0, 127, 0.5);
+            margin-bottom: 2rem;
+        }
+
+        .hero-sub {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin: 20px 0 1.5rem;
+        }
+
+        /* ============================================================
+           BIO IMAGE — Utilisée dans les blocs parcours
+           ============================================================ */
+        .bio-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ============================================================
+           CARTES GÉNÉRIQUES BOOTSTRAP
+           Surcharge légère pour le thème sombre.
+           ============================================================ */
+        .card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 0;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
+            border-color: var(--megan-pink);
+        }
+
+        .card-img-top {
+            height: 280px;
+            object-fit: cover;
+            aspect-ratio: 1 / 1;
+        }
+
+        /* ============================================================
+           SECTION DISCOGRAPHIE — Cartes albums avec overlay au hover
+           ============================================================ */
+        .discography-section {
+            background: #000;
+        }
+
+        .album-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            height: 300px;
+            /* Hauteur par défaut */
+        }
+
+        .album-card.large {
+            height: 400px;
+        }
+
+        .album-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* Overlay qui remonte au hover */
+        .album-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .album-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .album-card:hover .album-overlay {
+            transform: translateY(0);
+        }
+
+        .album-overlay h3 {
+            color: white;
+            font-family: var(--font-headings);
+            font-size: 2rem;
+        }
+
+        .album-overlay p {
+            color: #ccc;
+        }
+
+        .album-overlay small {
+            color: var(--megan-pink);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        /* ============================================================
+           SECTION HITS — Cartes singles avec player Spotify masqué
+           Le bouton ▶ révèle l'iframe au clic via togglePlayer().
+           ============================================================ */
+        .hits-section {
+            background: radial-gradient(circle at center, #111, #000);
+        }
+
+        .hit-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            height: 400px;
+            /* Hauteur par défaut */
+        }
+
+        .hit-card.small {
+            height: 300px;
+        }
+
+        .hit-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        /* Overlay opaque au hover */
+        .hit-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hit-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .hit-card:hover .hit-overlay {
+            opacity: 1;
+        }
+
+        .hit-overlay h3 {
+            color: white;
+            font-family: var(--font-headings);
+            font-size: 2rem;
+        }
+
+        .hit-overlay span {
+            color: var(--megan-pink);
+            font-size: 0.9rem;
+        }
+
+        /* Bouton play centré — animation pulse */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-megan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            border: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .hit-card:hover .play-btn {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(255, 0, 127, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 127, 0);
+            }
+        }
+
+        /* ============================================================
+           SECTION COLLABORATIONS
+           Cercles avec photo + nom + titre du collab.
+           ============================================================ */
+        .collab-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid transparent;
+            transition: 0.3s;
+        }
+
+        .collab-card:hover {
+            border-color: var(--megan-pink);
+            background: rgba(255, 0, 127, 0.05);
+        }
+
+        [data-bs-theme="light"] .collab-card {
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid #eee;
+        }
+
+        .collab-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--megan-pink);
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================================
+           SECTION PERSONAS — Cartes avec fond CSS + zoom au hover
+           Chaque variante (tina/hotgirl/suga) a sa propre image.
+           ============================================================ */
+        .persona-section {
+            background: #000;
+        }
+
+        .persona-card {
+            height: 400px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* Overlay sombre par-dessus le fond */
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        /* Couche image en fond absolu (permet le zoom indépendant) */
+        .persona-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s ease;
+        }
+
+        .persona-card:hover .persona-bg {
+            transform: scale(1.1);
+        }
+
+        .persona-card:hover {
+            box-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
+        }
+
+        /* Variante Tina Snow */
+        .persona-card.tina .persona-bg {
+            background-image: url('https://pbs.twimg.com/media/Dfgj-s8U8AEZolP.jpg');
+            filter: contrast(120%) saturate(140%);
+        }
+
+        .persona-card.tina::before {
+            background: linear-gradient(to top, rgba(255, 0, 80, 0.6), rgba(0, 0, 0, 0.8));
+        }
+
+        /* Variante Hot Girl Meg */
+        .persona-card.hotgirl .persona-bg {
+            background-image: url('https://bloximages.newyork1.vip.townnews.com/nola.com/content/tncms/assets/v3/editorial/f/55/f5541e0a-29cd-11ef-a6db-ebb0556cc644/666b682f78d9e.image.jpg?crop=905%2C905%2C419%2C114&resize=1200%2C1200&order=crop%2Cresize');
+            filter: brightness(110%) saturate(120%);
+        }
+
+        .persona-card.hotgirl::before {
+            background: linear-gradient(to top, rgba(255, 0, 200, 0.4), rgba(0, 0, 0, 0.7));
+        }
+
+        /* Variante Suga */
+        .persona-card.suga .persona-bg {
+            background-image: url('https://m.media-amazon.com/images/M/MV5BYjMyM2ViN2ItOWIyYi00YzM4LWExMzQtM2U5NDQ1ZTc0NjU1XkEyXkFqcGc@._V1_.jpg');
+            filter: contrast(90%) saturate(110%);
+        }
+
+        .persona-card.suga::before {
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.8));
+        }
+
+        /* Contenu textuel au-dessus de l'overlay */
+        .persona-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .persona-content h3 {
+            font-family: var(--font-headings);
+            font-size: 2rem;
+            color: white;
+        }
+
+        .persona-content p {
+            color: var(--megan-pink);
+        }
+
+        /* ============================================================
+           SECTION LEGACY — Cartes de chiffres clés (impact)
+           ============================================================ */
+        .legacy-card {
+            padding: 2rem;
+            border: 1px solid #222;
+            background: #111;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .legacy-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
+        }
+
+        .legacy-card h1 {
+            font-size: 4rem;
+            color: var(--megan-pink);
+        }
+
+        .legacy-card p {
+            color: #ccc;
+            text-transform: uppercase;
+        }
+
+        /* ============================================================
+           SECTION OUTFITS — Grille portrait 3/4
+           object-position: top pour privilégier le visage/corps entier.
+           ============================================================ */
+        .outfit-card {
+            border: 1px solid #222;
+            background: #111;
+            overflow: hidden;
+            border-radius: 6px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .outfit-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0 25px rgba(255, 0, 80, 0.4);
+            border-color: var(--megan-pink);
+        }
+
+        .outfit-img {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .outfit-card:hover .outfit-img {
+            transform: scale(1.04);
+        }
+
+        /* ============================================================
+           SECTION NAIL ART — Cartes avec label en overlay bas-gauche
+           ============================================================ */
+        .nail-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 6px;
+        }
+
+        .nail-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .nail-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .nail-card span {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ============================================================
+           AOS — Désactiver pointer-events pendant l'animation
+           ============================================================ */
+        [data-aos] {
+            pointer-events: none;
+            transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1) !important;
+        }
+
+        [data-aos].aos-animate {
+            pointer-events: auto;
+        }
+
+        /* ── Section Tour ── */
+        .tour-list {
+            border-top: 1px solid #222;
+        }
+
+        .tour-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.2rem 0;
+            border-bottom: 1px solid #1e1e1e;
+            transition: background 0.2s ease;
+        }
+
+        .tour-row:hover {
+            background: rgba(255, 0, 80, 0.04);
+            padding-left: 0.5rem;
+        }
+
+        /* Bloc date — jour / mois / année empilés */
+        .tour-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 48px;
+            text-align: center;
+        }
+
+        .tour-day {
+            font-family: var(--font-headings);
+            font-size: 1.8rem;
+            color: var(--megan-pink);
+            line-height: 1;
+        }
+
+        .tour-month {
+            font-size: 0.7rem;
+            color: var(--megan-grey);
+            letter-spacing: 2px;
+        }
+
+        .tour-year {
+            font-size: 0.65rem;
+            color: #555;
+        }
+
+        /* Lieu */
+        .tour-location {
+            flex: 1;
+        }
+
+        /* Nom de l'événement */
+        .tour-event-name {
+            flex: 1;
+        }
+
+        /* ── Titre de catégorie bibliographique ── */
+        .bib-category-title {
+            font-family: var(--font-headings);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--megan-pink);
+            border-bottom: 1px solid #222;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ── Liste de sources ── */
+        .bib-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bib-list li {
+            margin-bottom: 0.75rem;
+        }
+
+        /* ── Lien individuel de source ── */
+        .bib-link {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .bib-link:hover {
+            color: #ccc;
+            padding-left: 4px;
+        }
+
+        /* ── Badge source (nom du média) ── */
+        .bib-source {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--megan-pink);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ────────────────────────────────────────────────────────────
+         ICÔNES SVG — Sprite inline pour Bootstrap Icons
+         Utilisées par le toggle de thème (lune / soleil / demi-cercle)
+         ──────────────────────────────────────────────────────────── -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+        <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+            <path
+                d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+            <path
+                d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+        </symbol>
+        <symbol id="sun-fill" viewBox="0 0 16 16">
+            <path
+                d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+        </symbol>
+        <symbol id="circle-half" viewBox="0 0 16 16">
+            <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+        </symbol>
+    </svg>
+
+    <!-- ────────────────────────────────────────────────────────────
+         TOGGLE THÈME — Bouton flottant bas-droite
+         Permet de basculer entre light / dark / auto.
+         ──────────────────────────────────────────────────────────── -->
+    <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+        <button class="btn btn-megan py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+            aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme">
+            <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+                <use href="#moon-stars-fill"></use>
+            </svg>
+            <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                    <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                        <use href="#sun-fill"></use>
+                    </svg>
+                    Light
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center active" data-bs-theme-value="dark">
+                    <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                        <use href="#moon-stars-fill"></use>
+                    </svg>
+                    Dark
+                </button>
+            </li>
+            <li>
+                <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                    <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                        <use href="#circle-half"></use>
+                    </svg>
+                    Auto
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         HEADER — Navbar fixe + menu collapse
+         ════════════════════════════════════════════════════════════ -->
+    <header>
+        <nav class="navbar navbar-dark bg-black shadow-sm fixed-top">
+            <div class="container">
+
+                <!-- Logo / Brand -->
+                <a href="#" class="navbar-brand d-flex align-items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-mic-fill" viewBox="0 0 16 16" style="color:var(--megan-pink)" aria-hidden="true">
+                        <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z" />
+                        <path
+                            d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                    <span>Megan Thee Stallion</span>
+                </a>
+
+                <!-- Burger -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            </div>
+        </nav>
+
+        <!-- Menu collapse — À propos + Liens -->
+        <div class="collapse text-bg-dark" id="navbarHeader" style="margin-top: 56px;">
+            <div class="container py-4">
+                <div class="row">
+
+                    {# ── Colonne 1 : Navigation interne ── #}
+                    <div class="col-sm-5 col-md-4">
+                        <h4 class="text-white mb-3">Navigation</h4>
+                        <nav aria-label="Sections de la page">
+                            <ul class="list-unstyled mb-0" style="line-height: 2.2rem;">
+                                <li>
+                                    <a href="#parcours" class="nav-anchor">
+                                        <span class="nav-anchor-icon">01</span> Son Parcours
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#discography" class="nav-anchor">
+                                        <span class="nav-anchor-icon">02</span> Discographie
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#hits" class="nav-anchor">
+                                        <span class="nav-anchor-icon">03</span> Hits
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tour" class="nav-anchor">
+                                        <span class="nav-anchor-icon">04</span> Tour Dates
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#collabs" class="nav-anchor">
+                                        <span class="nav-anchor-icon">05</span> Collaborations
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#personas" class="nav-anchor">
+                                        <span class="nav-anchor-icon">06</span> Personas
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#impact" class="nav-anchor">
+                                        <span class="nav-anchor-icon">07</span> Her Impact
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#outfits" class="nav-anchor">
+                                        <span class="nav-anchor-icon">08</span> Outfits
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#nails" class="nav-anchor">
+                                        <span class="nav-anchor-icon">09</span> Nail Art
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#cosplays" class="nav-anchor">
+                                        <span class="nav-anchor-icon">10</span> Cosplays
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    {# ── Colonne 2 : À propos ── #}
+                    <div class="col-sm-4 col-md-4 py-4 py-sm-0">
+                        <h4 class="text-white mb-3">À propos</h4>
+                        <p class="text-body-secondary" style="font-size: 0.9rem; line-height: 1.6;">
+                            Megan Jovon Ruth Pete, connue sous le nom de Megan Thee Stallion,
+                            est une rappeuse, auteure-compositrice et entrepreneuse américaine
+                            originaire de Houston, Texas.
+                        </p>
+                    </div>
+
+                    {# ── Colonne 3 : Réseaux sociaux ── #}
+                    <div class="col-sm-3 col-md-4 py-4 py-sm-0">
+                        <h4 class="text-white mb-3">Réseaux</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="https://www.instagram.com/theestallion/" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
+                                    </svg>
+                                    Instagram
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://twitter.com/theestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+                                    </svg>
+                                    Twitter / X
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.tiktok.com/@theestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
+                                    </svg>
+                                    TikTok
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.facebook.com/MeganTheeStallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                    </svg>
+                                    Facebook
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.youtube.com/@megantheestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408z" />
+                                    </svg>
+                                    YouTube
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- ════════════════════════════════════════════════════════════
+         MAIN CONTENT
+         ════════════════════════════════════════════════════════════ -->
+    <main style="padding-top: 56px;">
+
+        <!-- ────────────────────────────────────────────────────────
+             HERO — Introduction plein écran
+             ──────────────────────────────────────────────────────── -->
+        <section class="hero-section d-flex align-items-center" aria-label="Hero">
+            <div class="container text-center">
+                <p class="hero-tag">The Hot Girl Coach</p>
+                <h1 class="hero-title">Real<br>Hot Girl Shit</h1>
+                <p class="hero-sub">
+                    Houston. Power. No Apologies.<br>
+                    Alter ego : <span class="highlight">Tina Snow</span>
+                </p>
+                <div class="hero-buttons mt-4">
+                    <a href="#discography" class="btn btn-megan btn-lg px-4 me-2">Enter the Era</a>
+                    <a href="#tour" class="btn btn-outline-light btn-lg px-4">See Live</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             PARCOURS — Biographie en blocs alternés image / texte
+             Chaque bloc correspond à une étape clé de sa carrière.
+             ──────────────────────────────────────────────────────── -->
+        <section id="parcours"class="py-5 container" aria-label="Parcours biographique">
+            <h2 class="section-title">Son Parcours</h2>
+
+            <!-- Bloc 1 : Origines -->
+            <div class="row align-items-center mb-5 mt-5">
+                <div class="col-md-7" data-aos="fade-right">
+                    <h3>Des racines à Houston à la vision d'une étoile</h3>
+                    <p>
+                        Originaire de Houston, Texas, Megan Thee Stallion grandit dans un environnement
+                        profondément musical. Fille de la rappeuse Holly-Wood, elle est très tôt exposée à
+                        l'univers du hip-hop, mais aussi à une discipline artistique exigeante et structurante.
+                    </p>
+                    <p>
+                        Ses premières performances se font aux côtés de sa mère, figure centrale de sa
+                        formation artistique. Cette période forge une identité forte : ambition, indépendance
+                        et maîtrise de son art.
+                    </p>
+                </div>
+                <div class="col-md-5" data-aos="fade-left">
+                    <img src="https://people.com/thmb/kn3_2EcGj5ajtrK0P1xwTiOQg_A=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():focal(799x341:801x343)/Megan-Thee-Stallion-Holly-Thomas-103124-tout-b27e8939d9904e21b2b45153073dec6c.jpg"
+                        class="bio-img" alt="Megan Thee Stallion et Holly Thomas">
+                </div>
+            </div>
+
+            <!-- Bloc 2 : Débuts & Industrie -->
+            <div class="row align-items-center mb-5">
+                <div class="col-md-5" data-aos="fade-right">
+                    <img src="https://www.booska-p.com/wp-content/uploads/2019/09/megan-thee-stallion-signe-sur-roc-nation-649.jpg"
+                        class="bio-img" alt="Signature chez Roc Nation">
+                </div>
+                <div class="col-md-7" data-aos="fade-left">
+                    <h3>Viralité, indépendance et premières signatures</h3>
+                    <p>
+                        Megan se fait connaître grâce à ses freestyles viraux sur les réseaux sociaux,
+                        où son flow agressif et sa présence scénique imposent immédiatement une identité forte.
+                    </p>
+                    <p>
+                        Elle signe d'abord avec 300 Entertainment, puis rejoint l'écosystème Roc Nation,
+                        consolidant une trajectoire marquée par l'indépendance artistique.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bloc 3 : Traumazine -->
+            <div class="row align-items-center mb-5">
+                <div class="col-md-7" data-aos="fade-right">
+                    <h3>Traumazine — douleur, perte et exposition publique</h3>
+                    <p>
+                        L'album <strong>Traumazine</strong> marque un tournant émotionnel majeur, créé après
+                        la perte de sa mère et dans un contexte d'exposition médiatique intense.
+                    </p>
+                    <p>
+                        L'album devient une thérapie artistique : transformer la douleur en puissance créative.
+                    </p>
+                </div>
+                <div class="col-md-5" data-aos="fade-left">
+                    <img src="https://imagez.tmz.com/image/17/16by9/2022/10/16/17544aacffd2436fb5ddf9e5dfc84a81_xl.jpg"
+                        class="bio-img" alt="Traumazine era">
+                </div>
+            </div>
+
+            <!-- Bloc 4 : Renaissance -->
+            <div class="row align-items-center mb-5">
+                <div class="col-md-5" data-aos="fade-right">
+                    <img src="https://www.rollingstone.com/wp-content/uploads/2024/06/megan-album-drop-NEW-PIC.jpg?w=1581&h=1054&crop=1"
+                        class="bio-img" alt="Album Megan 2024">
+                </div>
+                <div class="col-md-7" data-aos="fade-left">
+                    <h3>Megan — renaissance et contrôle narratif</h3>
+                    <p>
+                        Avec l'album <strong>Megan</strong>, elle entre dans une phase de reconstruction
+                        et de maîtrise totale de son identité artistique.
+                    </p>
+                    <p>
+                        Elle reprend le contrôle de son récit, transforme les épreuves en force et affirme
+                        une posture plus indépendante et stratégique dans l'industrie.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Bloc 5 : Présent -->
+            <div class="row align-items-center mb-4">
+                <div class="col-md-7" data-aos="fade-right">
+                    <h3>Une artiste autonome en pleine maîtrise de son image</h3>
+                    <p>
+                        Aujourd'hui, Megan Thee Stallion incarne une artiste pleinement indépendante,
+                        capable de naviguer entre performance, business et storytelling personnel.
+                    </p>
+                    <p>
+                        Sa carrière est un récit de résilience où chaque projet reflète une étape de vie.
+                    </p>
+                </div>
+                <div class="col-md-5" data-aos="fade-left">
+                    <img src="https://media.gq.com/photos/68793bd7d310c7e98e869a34/master/w_2560%2Cc_limit/2225474078"
+                        class="bio-img" alt="Megan Thee Stallion 2025">
+                </div>
+            </div>
+
+            <!-- Badges de genre -->
+            <div class="d-flex gap-3 mt-3 flex-wrap">
+                <span class="badge bg-dark p-2"
+                    style="color:var(--megan-pink); border:1px solid var(--megan-pink)">Southern Hip-Hop</span>
+                <span class="badge bg-dark p-2"
+                    style="color:var(--megan-pink); border:1px solid var(--megan-pink)">Trap</span>
+                <span class="badge bg-dark p-2"
+                    style="color:var(--megan-pink); border:1px solid var(--megan-pink)">Dirty South</span>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             DISCOGRAPHIE — Grille d'albums avec overlay Spotify
+             Chaque carte révèle un iframe embed au hover.
+             ──────────────────────────────────────────────────────── -->
+        <section id="discography" class="discography-section py-5" aria-label="Discographie">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Eras</h2>
+
+                <div class="row g-4">
+
+                    {# ── Album : Tina Snow (2018) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/5001121ba4d590fa25e728ebc5c4dccb.999x999x1.png"
+                                alt="Tina Snow">
+                            <div class="album-overlay">
+                                <h3>Tina Snow</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/26jEIrN7WSAnVQXXUmLRSN?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Tina Snow sur Spotify"></iframe>
+                                <p>2018 • Alter Ego Era</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Fever (2019) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/5c93429d0039f046f8636cb36f324390.693x693x1.png"
+                                alt="Fever">
+                            <div class="album-overlay">
+                                <h3>Fever</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/5WLquTz7nUnsHCj80b6wci?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Fever sur Spotify"></iframe>
+                                <p>2019 • Hot Girl Summer begins</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Suga (2020) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/bd757918fc4dac7583266b3b554434a0.1000x1000x1.jpg"
+                                alt="Suga">
+                            <div class="album-overlay">
+                                <h3>Suga</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/6Lo6ylJg4qbFfxicPEOzMI?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Suga sur Spotify"></iframe>
+                                <p>2020 • Savage Era</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Good News (2020) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="album-card large">
+                            <img src="https://images.genius.com/d30190e9e0a78f306b4ee9a9c6dcb8ab.1000x1000x1.png"
+                                alt="Good News">
+                            <div class="album-overlay">
+                                <h3>Good News</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/0KjckH1EE6HRRurMIXSc0r?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Good News sur Spotify"></iframe>
+                                <p>Includes <span class="highlight">Savage Remix</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Traumazine (2022) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                        <div class="album-card large">
+                            <img src="https://images.genius.com/0d83bd99e69b735e5bb68d1f618ce74c.1000x1000x1.jpg"
+                                alt="Traumazine">
+                            <div class="album-overlay">
+                                <h3>Traumazine</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/4YP0h2KGDb20eJuStnBvim?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Traumazine sur Spotify"></iframe>
+                                <p>Raw. Personal. Powerful.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Something for Thee Hotties (2021) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/5b557b9a4a1bcb66986f0cc1fffbc4c5/0x1900-000000-80-0-0.jpg"
+                                alt="Something for Thee Hotties">
+                            <div class="album-overlay">
+                                <h3>Something for Thee Hotties</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/6B26OzQRObxAp1tbf8jeTq?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Something for Thee Hotties sur Spotify"></iframe>
+                                <p>Freestyles. Energy. No filter.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Megan (2024) ── #}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="700">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/b65b2109e4984368218927dba7b19895/1900x1900-000000-80-0-0.jpg"
+                                alt="Megan">
+                            <div class="album-overlay">
+                                <h3>Megan</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/0FzWvaeMBfKBCqxHTLVlB8?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Megan sur Spotify"></iframe>
+                                <p>2024 • Rebirth Era</p>
+                                <small class="highlight">Hiss • Cobra • Boa</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Megan Act II (2024) ── #}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="800">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/ffbca6c521268baede9344848de1ac8b/1900x1900-000000-81-0-0.jpg"
+                                alt="Megan Act II">
+                            <div class="album-overlay">
+                                <h3>Megan: Act II</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/7KYpVsgw7yqbfmGBp9gYiR?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Megan Act II sur Spotify"></iframe>
+                                <p>2024 • Deluxe / Second Act</p>
+                                <small class="highlight">Bigger in Texas • Neva Play</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>{# /.row — albums #}
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             HITS — Singles avec player Spotify masqué
+             Le bouton ▶ appelle togglePlayer(id) pour afficher
+             l'iframe correspondant au morceau.
+             IMPORTANT : chaque <div id="..."> doit être unique.
+             ──────────────────────────────────────────────────────── -->
+        <section id="hits" class="hits-section py-5" aria-label="Singles et hits">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Hits</h2>
+
+                <div class="row g-4">
+
+                    {# ── Single : WAP ── #}
+                    <div class="col-md-4" data-aos="fade-right" data-aos-delay="100">
+                        <div class="hit-card">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/884908fd2fd1ea7fb6f98a5b345ad7d8/1900x1900-000000-80-0-0.jpg"
+                                alt="WAP">
+                            <div class="hit-overlay">
+                                <h3>WAP</h3>
+                                <div id="player-wap" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/4Oun2ylbjFKMPTiaSbbCih?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="WAP sur Spotify"></iframe>
+                                </div>
+                                <span>Iconic. Viral. Unfiltered.</span>
+                                <button onclick="togglePlayer('player-wap')" class="play-btn"
+                                    aria-label="Écouter WAP">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Savage ── #}
+                    <div class="col-md-4" data-aos="fade-left" data-aos-delay="200">
+                        <div class="hit-card">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/83eb274da4ab414aaba38536f79a1f97/1900x1900-000000-81-0-0.jpg"
+                                alt="Savage">
+                            <div class="hit-overlay">
+                                <h3>Savage</h3>
+                                <div id="player-savage" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/55CHeLEfn5iJ0IIkgaa4si?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Savage sur Spotify"></iframe>
+                                </div>
+                                <span>Hot Girl Summer Anthem</span>
+                                <button onclick="togglePlayer('player-savage')" class="play-btn"
+                                    aria-label="Écouter Savage">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Body ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="250">
+                        <div class="hit-card small">
+                            <img src="https://images.genius.com/d30190e9e0a78f306b4ee9a9c6dcb8ab.1000x1000x1.png"
+                                alt="Body">
+                            <div class="hit-overlay">
+                                <h3>Body</h3>
+                                <div id="player-body" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/0A1hoCfMLkiAgvhWkkucJa?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Body sur Spotify"></iframe>
+                                </div>
+                                <span>Chart Top 1 Hit</span>
+                                <button onclick="togglePlayer('player-body')" class="play-btn"
+                                    aria-label="Écouter Body">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Thot Shit ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="hit-card small">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/9288660d777d636b9dcbf63b1c99fd93/0x1900-000000-80-0-0.jpg"
+                                alt="Thot Shit">
+                            <div class="hit-overlay">
+                                <h3>Thot Shit</h3>
+                                <div id="player-thot" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/5zNW5ARjYhJQJz1AChP33n?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Thot Shit sur Spotify"></iframe>
+                                </div>
+                                <span>Certified Platinum</span>
+                                <button onclick="togglePlayer('player-thot')" class="play-btn"
+                                    aria-label="Écouter Thot Shit">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Hiss ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="350">
+                        <div class="hit-card small">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/5f54a31eeabcac414cbfcc965f0f1135/1900x1900-000000-81-0-0.jpg"
+                                alt="Hiss">
+                            <div class="hit-overlay">
+                                <h3>Hiss</h3>
+                                <div id="player-hiss" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/4YGJukkshUUGIqzBUa5G1u?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Hiss sur Spotify"></iframe>
+                                </div>
+                                <button onclick="togglePlayer('player-hiss')" class="play-btn"
+                                    aria-label="Écouter Hiss">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Cobra ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="hit-card small">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/9505faa33b12e44f9afc3e57def6b9f0/0x1900-000000-80-0-0.jpg"
+                                alt="Cobra">
+                            <div class="hit-overlay">
+                                <h3>Cobra</h3>
+                                <div id="player-cobra" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/3Kh8X9lHztqVBTgw30HbXn?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Cobra sur Spotify"></iframe>
+                                </div>
+                                <span>Chart Top 1 Hit</span>
+                                <button onclick="togglePlayer('player-cobra')" class="play-btn"
+                                    aria-label="Écouter Cobra">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Boa (GIF cover) ── #}
+                    <div class="col-md-4" data-aos="fade-left" data-aos-delay="500">
+                        <div class="hit-card small">
+                            <img src="https://images.genius.com/eda0923e5cd9d217a88332a70ece4a90.600x600x165.gif"
+                                alt="Boa" style="object-fit:cover; width:100%; height:100%;">
+                            <div class="hit-overlay">
+                                <h3>Boa</h3>
+                                <div id="player-boa" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/3tUwmCcdunuXKwHu8u2aBn?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Boa sur Spotify"></iframe>
+                                </div>
+                                <span>Deep Cut. Emotional.</span>
+                                <button onclick="togglePlayer('player-boa')" class="play-btn"
+                                    aria-label="Écouter Boa">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Anxiety ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                        <div class="hit-card">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/e77b162b10e0d0c07e2810269750ecdf/1900x1900-000000-80-0-0.jpg"
+                                alt="Anxiety">
+                            <div class="hit-overlay">
+                                <h3>Anxiety</h3>
+                                <div id="player-anxiety" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/6Ve9MNsl8OFg6rHd227bYh?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Anxiety sur Spotify"></iframe>
+                                </div>
+                                <span>Deep Cut. Emotional.</span>
+                                <button onclick="togglePlayer('player-anxiety')" class="play-btn"
+                                    aria-label="Écouter Anxiety">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Single : Captain Hook ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="700">
+                        <div class="hit-card">
+                            <img src="https://i1.sndcdn.com/artworks-dFgwX7t7Im5D11A1-QEzIqA-t1080x1080.jpg"
+                                alt="Captain Hook">
+                            <div class="hit-overlay">
+                                <h3>Captain Hook</h3>
+                                <div id="player-hook" style="display:none;">
+                                    <iframe style="border-radius:12px; margin-top:10px"
+                                        src="https://open.spotify.com/embed/track/4R2kfaDFGUsAtJQx0RgMOo?utm_source=generator"
+                                        width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                        loading="lazy" title="Captain Hook sur Spotify"></iframe>
+                                </div>
+                                <span>Viral Flow</span>
+                                <button onclick="togglePlayer('player-hook')" class="play-btn"
+                                    aria-label="Écouter Captain Hook">▶</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>{# /.row — hits #}
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             COLLABORATIONS — Avatars circulaires des artistes invités
+             ──────────────────────────────────────────────────────── -->
+        <section id="collabs" class="py-5 container" aria-label="Collaborations">
+            <h2 class="section-title w-100 text-center">Grosses Collabs</h2>
+            <p class="text-center text-body-secondary mb-5">Aux côtés des plus grandes stars internationales</p>
+
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-4">
+
+                {# Collab : Future #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab6761610000e5eb7565b356bc9d9394eefa2ccb"
+                            class="collab-avatar" alt="Future">
+                        <h5 class="mb-1">Future</h5>
+                        <small style="color:var(--megan-pink)">Cash Shit</small>
+                    </div>
+                </div>
+
+                {# Collab : Beyoncé #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab6761610000e5eb7eaa373538359164b843f7c0"
+                            class="collab-avatar" alt="Beyoncé">
+                        <h5 class="mb-1">Beyoncé</h5>
+                        <small style="color:var(--megan-pink)">Savage Remix</small>
+                    </div>
+                </div>
+
+                {# Collab : BTS #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab67616100005174f80ec63ea7a0ef0fba60957d"
+                            class="collab-avatar" alt="BTS">
+                        <h5 class="mb-1">BTS</h5>
+                        <small style="color:var(--megan-pink)">Butter Remix</small>
+                    </div>
+                </div>
+
+                {# Collab : TWICE #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab6761610000e5eb3d8820046fd455b38d644864"
+                            class="collab-avatar" alt="TWICE">
+                        <h5 class="mb-1">TWICE</h5>
+                        <small style="color:var(--megan-pink)">Feel Special Remix</small>
+                    </div>
+                </div>
+
+                {# Collab : Dua Lipa #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab67616d0000b273a22a7b828934f83ed9901354"
+                            class="collab-avatar" alt="Dua Lipa">
+                        <h5 class="mb-1">Dua Lipa</h5>
+                        <small style="color:var(--megan-pink)">Sweetest Pie</small>
+                    </div>
+                </div>
+
+                {# Collab : Cardi B #}
+                <div class="col">
+                    <div class="collab-card rounded h-100">
+                        <img src="https://i.scdn.co/image/ab6761610000e5eba23286f24edd4a7dbdc6311d"
+                            class="collab-avatar" alt="Cardi B">
+                        <h5 class="mb-1">Cardi B</h5>
+                        <small style="color:var(--megan-pink)">WAP</small>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             PERSONAS — Trois alter egos visuels
+             Chaque carte a une classe unique (tina/hotgirl/suga)
+             qui définit l'image CSS via .persona-bg.
+             ──────────────────────────────────────────────────────── -->
+        <section id="personas" class="persona-section py-5" aria-label="Personas">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Personas</h2>
+                <div class="row g-4">
+
+                    <div class="col-md-4" data-aos="zoom-in">
+                        <div class="persona-card tina">
+                            <div class="persona-bg"></div>
+                            <div class="persona-content">
+                                <h3>Tina Snow</h3>
+                                <p>Raw. Dominant. Unfiltered.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" data-aos="zoom-in">
+                        <div class="persona-card hotgirl">
+                            <div class="persona-bg"></div>
+                            <div class="persona-content">
+                                <h3>Hot Girl Meg</h3>
+                                <p>Confident. Viral. Outside.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" data-aos="zoom-in">
+                        <div class="persona-card suga">
+                            <div class="persona-bg"></div>
+                            <div class="persona-content">
+                                <h3>Suga</h3>
+                                <p>Sweet. Dangerous. Controlled.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             HER IMPACT — Chiffres clés en cartes
+             ──────────────────────────────────────────────────────── -->
+        <section id="impact" class="py-5" aria-label="Impact et distinctions">
+            <div class="container text-center">
+                <h2 class="section-title mb-5">Her Impact</h2>
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <div class="legacy-card">
+                            <h1>3</h1>
+                            <p>Grammy Awards remportés</p>
+                            <small>Dont "Best New Artist" — reconnaissance institutionnelle rare pour une
+                                rappeuse.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="legacy-card">
+                            <h1>#1</h1>
+                            <p>Billboard Hot 100</p>
+                            <small>Avec <strong>Savage (Remix)</strong> et <strong>WAP</strong>, deux phénomènes
+                                culturels globaux.</small>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="legacy-card">
+                            <h1>Culture</h1>
+                            <p>Impact générationnel</p>
+                            <small>Redéfinition de l'image des femmes dans le rap : sexualité assumée, vulnérabilité
+                                publique, empowerment narratif.</small>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             AU-DELÀ DE LA MUSIQUE — Blocs thématiques
+             Chaque bloc alterne image gauche/droite avec du texte.
+             ──────────────────────────────────────────────────────── -->
+        <section id="beyond" class="py-5 bg-black text-light" aria-label="Impact culturel et social">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Au-delà de la musique</h2>
+
+                {# Bloc : Santé mentale #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-7" data-aos="fade-right">
+                        <h3>Une voix pour la santé mentale et la vulnérabilité</h3>
+                        <p>Au-delà de sa carrière musicale, Megan s'est imposée comme une figure culturelle majeure. Son
+                            image repose sur un équilibre entre hyper-confiance, vulnérabilité assumée et discours de
+                            reconstruction personnelle.</p>
+                        <p> Elle a ouvertement abordé ses luttes liées à la santé mentale, notamment à travers ses
+                            prises de parole publiques et ses projets musicaux. Dans sa campagne <em>Seize the
+                                Awkward</em>, elle encourage à normaliser les conversations
+                            sur la dépression et l'anxiété, rendant visible la fragilité derrière la performance de
+                            force constante.</p>
+                        <p class="highlight">"Bad bitches have bad days too" — normalisation de la santé mentale dans un
+                            univers qui valorise l'invincibilité.</p>
+                    </div>
+                    <div class="col-md-5" data-aos="fade-left">
+                        <img src="https://www.datocms-assets.com/12810/1695738367-mts-x-sta-film-thumbnail.png?auto=format&fit=max&w=1200"
+                            class="bio-img" alt="Campagne santé mentale">
+                    </div>
+                </div>
+
+                {# Bloc : Sexualité & politique du corps #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-5" data-aos="fade-right">
+                        <img src="https://www.nme.com/wp-content/uploads/2022/06/Megan-Thee-Stallion-shares-music-video-for-Plan-B.jpg"
+                            class="bio-img" alt="Plan B - performance">
+                    </div>
+                    <div class="col-md-7" data-aos="fade-left">
+                        <h3>Sexualité, pouvoir et politique du corps</h3>
+                        <p>
+                            L’un des aspects les plus controversés de son œuvre est l’hypersexualité assumée dans ses
+                            textes.
+                            Mais réduire cela à une provocation serait ignorer sa dimension politique.
+                        </p>
+
+                        <p> Elle participe à une reconfiguration du
+                            discours sur le désir féminin, en assumant une hypersexualité contrôlée, revendiquée et non
+                            punitive.</p>
+                        <p>
+                            Cette démarche s’inscrit dans une logique culturelle plus large : celle de la
+                            réappropriation du corps féminin dans l’espace médiatique, historiquement surcontrôlé.
+                            Dans cette perspective, l’hypersexualité n’est pas uniquement esthétique ou provocatrice,
+                            mais devient un outil discursif de pouvoir, de contrôle de l’image et de subversion des
+                            normes.
+                        </p>
+                        <p class="highlight">Là où le rap masculin normalise la violence, elle normalise le désir
+                            féminin — et c'est précisément ce qui crée la polémique.</p>
+                    </div>
+                </div>
+
+                {# Bloc : Entrepreneuriat #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-7" data-aos="fade-right">
+                        <h3>De l'artiste à l'architecte économique</h3>
+                        <p>Ses collaborations avec <strong>Popeyes</strong> — notamment autour de la "Hottie Sauce" —
+                            participent à une hybridation entre culture populaire, identité artistique et consommation
+                            de masse.</p>
+                        <p>Ses partenariats avec Nike, Cash App et Planet Fitness dessinent une stratégie cohérente :
+                            occuper les espaces du sport, de la finance et du lifestyle tout en conservant une identité
+                            narrative forte.</p>
+                        <p>
+                            La création de son propre label s’inscrit dans cette même logique d’autonomisation.
+                            Elle marque une rupture avec les rapports de dépendance historiques entre artistes — en
+                            particulier femmes noires —
+                            et industries musicales souvent extractives.
+                        </p>
+                        <p class="highlight">Le succès n'est plus seulement mesuré en streams, mais en capacité à
+                            redistribuer les règles du jeu économique.</p>
+                    </div>
+                    <div class="col-md-5" data-aos="fade-left">
+                        <img src="https://images.complex.com/complex/image/upload/v1746118702/megan_thee_stallion_popeyes_miami_clgcps.jpg"
+                            class="bio-img" alt="Popeyes x Megan">
+                    </div>
+                </div>
+
+                {# Bloc : Fitness #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-6" data-aos="fade-right">
+                        <img src="https://media.ebony.com/sytwmfsyue/uploads/2022/06/01/Nike_Megan_Thee_Stallion.jpg"
+                            class="bio-img" alt="Nike x Megan">
+                    </div>
+                    <div class="col-md-6" data-aos="fade-left">
+                        <h3>Le corps comme discipline, pas seulement comme esthétique</h3>
+
+                        <p>
+                            À travers ses sessions documentées et ses programmes comme le <strong>Hottie
+                                Bootcamp</strong>,
+                            elle met en scène non pas un résultat, mais un processus :
+                            répétition, fatigue, effort et progression.
+                            Cette transparence contraste avec les représentations filtrées et instantanées du corps
+                            féminin sur les réseaux sociaux.
+                        </p>
+
+                        <p>
+                            Le corps devient ici un outil de performance et d’endurance,
+                            et non uniquement un objet de regard.
+                            Cette approche redéfinit subtilement les standards :
+                            être “sexy” ne s’oppose plus à être forte, disciplinée et athlétique.
+                        </p>
+
+                        <p>
+                            En exposant la difficulté derrière l’apparence,
+                            elle participe à une revalorisation de l’effort dans une culture dominée par
+                            l’instantanéité.
+                        </p>
+                        <p class="highlight">Le "Hot Girl Summer" n'est plus seulement une posture : c'est une pratique.
+                        </p>
+                    </div>
+                </div>
+
+                {# Bloc : Foundation #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-7" data-aos="fade-right">
+                        <h3>Redistribution et responsabilité sociale</h3>
+                        <p>Avec la <strong>Pete & Thomas Foundation</strong>, Megan inscrit son succès dans une logique
+                            de redistribution concrète, ciblant l'accès à l'éducation et la stabilité du logement.</p>
+                        <p class="highlight">L'empowerment ne se limite pas au discours : il se mesure à l'impact réel
+                            sur les conditions de vie.</p>
+                    </div>
+                    <div class="col-md-5" data-aos="fade-left">
+                        <img src="https://lirp.cdn-website.com/5c48a952/dms3rep/multi/opt/IMG_0467-1920w.JPG"
+                            class="bio-img" alt="Pete & Thomas Foundation">
+                    </div>
+                </div>
+
+                {# Bloc : Pop culture & Anime #}
+                <div class="row align-items-center mb-5">
+                    <div class="col-md-5" data-aos="fade-right">
+                        <img src="https://manga-universe.net/wp-content/uploads/2024/05/gmqdgijbcaadpyo-1.jpg"
+                            class="bio-img" alt="Megan et l'univers anime">
+                    </div>
+                    <div class="col-md-7" data-aos="fade-left">
+                        <h3>Déconstruction des normes culturelles et identité hybride</h3>
+                        <p>En revendiquant ouvertement ses influences anime et jeux vidéo, elle brouille des frontières
+                            culturelles historiquement rigides. La figure de la "femme noire geek" a longtemps été
+                            marginalisée — elle la réhabilite.</p>
+                        <p class="highlight">Elle ne change pas seulement les règles — elle élargit le terrain de jeu.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             OUTFITS — Grille portrait 3/4 (lookbook)
+             aspect-ratio: 3/4 + object-position: top
+             pour afficher le corps entier plutôt qu'un recadrage carré.
+             ──────────────────────────────────────────────────────── -->
+        <section id="outfits" class="py-5" aria-label="Outfits et looks">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Outfits</h2>
+
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+                    {# Chaque .outfit-card contient une image portrait 3/4 #}
+
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://assets.teenvogue.com/photos/6717c0e5405238231a7aca2a/master/w_1600%2Cc_limit/2180161267"
+                                class="outfit-img" alt="Outfit 1" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img src="https://pbs.twimg.com/media/HBjKgC2XoAAX-A7.jpg"
+                                class="outfit-img" alt="Outfit 2" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/4d/f9/dd/4df9ddfad28e5f876b65f6eff3c82758.jpg"
+                                class="outfit-img" alt="Outfit 3" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://preview.redd.it/hi-any-id-on-this-top-and-also-this-dress-megan-thee-v0-7dm64pg54t1e1.jpg?width=640&crop=smart&auto=webp&s=0481895ac39ced3fd42667d0c9c10d465ba99d3a"
+                                class="outfit-img" alt="Outfit 4" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/f2/b5/d6/f2b5d6a2d9813c661e3b45d284f33253.jpg"
+                                class="outfit-img" alt="Outfit 5" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/39/7a/bd/397abd4ab4817fb35ea77c66c340e760.jpg"
+                                class="outfit-img" alt="Outfit 6" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/7d/e2/62/7de262b62fb52dcd84f5c807466e4731.jpg"
+                                class="outfit-img" alt="Outfit 7" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/c5/63/ed/c563eda2bfe0474ffcb1f697cb9e2b76.jpg"
+                                class="outfit-img" alt="Outfit 8" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/2b/9e/7b/2b9e7ba60bcb8f0d7dd5f8d75fc50648.jpg"
+                                class="outfit-img" alt="Outfit 9" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/64/cd/93/64cd93fc010df1b309cdd5e4d993d065.jpg"
+                                class="outfit-img" alt="Outfit 10" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/63/f4/9d/63f49d5ee212b1592cccfd4b538f9a3e.jpg"
+                                class="outfit-img" alt="Outfit 11" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/06/7c/f0/067cf04515a710e27b13842a9d018d46.jpg"
+                                class="outfit-img" alt="Outfit 12" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/82/2c/e1/822ce101a7bfea3a47cae8e1d3caeafe.jpg"
+                                class="outfit-img" alt="Outfit 13" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/25/7c/f9/257cf9f9e0880b2bab076fa87ad78f1d.jpg"
+                                class="outfit-img" alt="Outfit 14" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/7c/74/8a/7c748ad50bad950e21d4f601b5197d73.jpg"
+                                class="outfit-img" alt="Outfit 15" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://poster-girl.com/cdn/shop/files/2_-_MEGAN_THEE_STALLION.jpg?crop=center&height=1296&v=1730994897&width=1080"
+                                class="outfit-img" alt="Outfit 16" loading="lazy"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             NAIL ART — Grille 3 colonnes avec label en overlay
+             ──────────────────────────────────────────────────────── -->
+        <section id="nails"class="py-5 bg-black" aria-label="Nail art">
+            <div class="container">
+                <h2 class="section-title text-center mb-3">Nail Art</h2>
+                <p class="text-center mb-5">More than nails.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/0az8HZuKcaIaR1Rqxow0rOuRcTA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg2-8d6751be12bd4adbab035472191458d7.jpg"
+                                alt="Crystal Nails" loading="lazy"><span>Crystal Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/wKYfMp417YQ1ciPj_TbHhnFJdIE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg5-8c1996c1108a495bb8e4fe7707baf87f.jpg"
+                                alt="Golden Nails" loading="lazy"><span>Golden & Gilded Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/zz5yGOGgz019eQ8eQEKNdgWxSKQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg6-9fe4323cfe174301abae3048f27a07a0.jpg"
+                                alt="Regal Nails" loading="lazy"><span>Regal Nails</span></div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/XLgIaH00J-A6RaxuHSB9rERceGg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg7-1dcf43434eb74a558e254ba8fdf4145a.jpg"
+                                alt="Super Mario Nails" loading="lazy"><span>Super Mario Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/r3gSsGbvw3xq2nkOx5tFo8zypMI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg8-1c7a303fc228443d93d4a673b63e000c.jpg"
+                                alt="Electric Green Nails" loading="lazy"><span>Electric Green French Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/qLU9uFpZxEtmheQhe-4q4elT9TI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg11-f353a8f876dc460f891137582a6c709b.jpg"
+                                alt="Floral Nails" loading="lazy"><span>Fun Floral Nails</span></div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://i.redd.it/fashion-highlight-megan-thee-stallions-nails-v0-w0rjma8in53c1.jpg?width=750&format=pjpg&auto=webp&s=e552f7bafa00150f0d2e4cb84ff2878cdc4ae806"
+                                alt="Barbie Nails" loading="lazy"><span>Barbie Aura Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/Cd_Ajnl9lR2UdMssB4hfpt8wTh4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/meg17-8a2e4db25806418aa4f84830d60026fb.jpg"
+                                alt="Galaxy Nails" loading="lazy"><span>Galaxy Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/5dRnhmYrT_dRl3R4LWvQs1Cef2A=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg15-22c4ca15bf8143af98fe4f8eccc9fbb0.jpg"
+                                alt="Cat-Eye Nails" loading="lazy"><span>Cat-Eye Nails</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             COSPLAYS — Grille Bootstrap cards avec personnage identifié
+             ──────────────────────────────────────────────────────── -->
+        <section  id="cosplays"  class="py-5 container" aria-label="Cosplays anime et jeux vidéo">
+            <h2 class="section-title text-center mb-5">Cosplays</h2>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                {# Cosplay 1 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/megan-thee-stallion-looks-stunning-dressed-as-jolyne-cujoh-v0-zcdkmy334knc1.jpg?width=1284&format=pjpg&auto=webp&s=a17fdb31b11a8c434eb9bef3e68449f7e8f6fe92"
+                            class="card-img-top" alt="Jolyne Cujoh" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Jolyne Cujoh – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 2 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/megans-bizarre-adventure-stand-hot-girl-v0-4g0x3qvl4yxd1.jpg?width=2048&format=pjpg&auto=webp&s=3d09120ac173244f8fe33c87a14829d665fdb5ac"
+                            class="card-img-top" alt="Trish Una" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Trish Una – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 3 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/meg-the-stallion-cosplays-gojo-v0-undkklvesslc1.jpg?width=1166&format=pjpg&auto=webp&s=8e8f565caae333bf67339697be564186affa5693"
+                            class="card-img-top" alt="Gojo Satoru" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Gojo Satoru – Jujutsu Kaisen</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 4 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://assets.teenvogue.com/photos/65e33bc768ba378e363db64a/1:1/w_828,h_828,c_limit/Megan%20Thee%20Stallion%20at%20the%202024%20Crunchyroll%20Anime%20Awards%20on%20March%202,%202024%20in%20Tokyo,%20Japan_1.JPG"
+                            class="card-img-top" alt="Crunchyroll Awards 2024" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Bruno Bucciarati – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 5 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/7437b0156360243.636569f2b795e.jpg"
+                            class="card-img-top" alt="Mirko" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Mirko – My Hero Academia</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 6 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://www.papermag.com/media-library/image.jpg?id=20551796&width=1200&height=1200&coordinates=0,89,0,1161"
+                            class="card-img-top" alt="Todoroki Shoto" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Todoroki Shoto – My Hero Academia</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 7 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/F9tT9MUa8AAb4qn.jpg" class="card-img-top"
+                            alt="Death the Kid" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Death The Kid – Soul Eater</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 8 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/G4glqeSW0AInrUi.jpg" class="card-img-top" alt="Choso"
+                            loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Choso – Jujutsu Kaisen</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 9 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/G4mfrRxWcAAYCWB.jpg" class="card-img-top"
+                            alt="Drolta Tzuentes" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Drolta Tzuentes – Castlevania: Nocturne</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 10 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://cdn.mos.cms.futurecdn.net/XGbEizwmcXEBBf5yesLiCN.jpg" class="card-img-top"
+                            alt="Mileena" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Mileena – Mortal Kombat</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 11 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://f4.bcbits.com/img/a1379647602_10.jpg" class="card-img-top" alt="Sailor Moon"
+                            loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Sailor Moon – Sailor Moon</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+        {# ============================================================
+        SECTION TOUR — Dates de tournée dynamiques (Ticketmaster)
+
+        Variable Twig attendue : tour_events (array)
+        Injectée depuis HomeController::index()
+
+        Chaque événement contient :
+        - name : string — Nom de l'événement
+        - date : string — Date locale (YYYY-MM-DD)
+        - time : string — Heure locale (HH:MM:SS), peut être vide
+        - city : string — Ville
+        - venue : string — Nom de la salle
+        - country : string — Pays
+        - url : string — Lien billetterie Ticketmaster
+        ============================================================ #}
+
+        <section id="tour" class="py-5 bg-black" aria-label="Dates de tournée">
+            <div class="container">
+
+                <h2 class="section-title text-center mb-2">Tour Dates</h2>
+                <p class="text-center text-body-secondary mb-5">Billetterie officielle via Ticketmaster</p>
+
+                {# ── Cas : aucun événement trouvé ── #}
+                {% if tour_events is empty %}
+                <div class="text-center py-5">
+                    <p style="color: var(--megan-grey); font-size: 1.1rem;">
+                        Aucune date de tournée disponible pour le moment.<br>
+                        <small>Reviens bientôt — de nouvelles dates arrivent.</small>
+                    </p>
+                </div>
+
+                {# ── Cas : événements disponibles ── #}
+                {% else %}
+                <div class="tour-list">
+                    {% for event in tour_events %}
+                    <div class="tour-row" data-aos="fade-up" data-aos-delay="{{ loop.index * 50 }}">
+
+                        {# Date #}
+                        <div class="tour-date">
+                            {% set dateObj = event.date|date_modify('+0 days') %}
+                            <span class="tour-day">{{ event.date|date('d') }}</span>
+                            <span class="tour-month">{{ event.date|date('M')|upper }}</span>
+                            <span class="tour-year">{{ event.date|date('Y') }}</span>
+                        </div>
+
+                        {# Lieu #}
+                        <div class="tour-location">
+                            <strong class="d-block text-white">{{ event.venue }}</strong>
+                            <small class="text-body-secondary">
+                                {{ event.city }}{% if event.country %}, {{ event.country }}{% endif %}
+                            </small>
+                        </div>
+
+                        {# Nom de l'événement #}
+                        <div class="tour-event-name d-none d-md-block">
+                            <span style="color: var(--megan-grey); font-size: 0.9rem;">{{ event.name }}</span>
+                        </div>
+
+                        {# Heure (si disponible) #}
+                        <div class="tour-time d-none d-lg-block text-body-secondary">
+                            {% if event.time %}
+                            {{ event.time|slice(0, 5) }} {# Format HH:MM #}
+                            {% else %}
+                            —
+                            {% endif %}
+                        </div>
+
+                        {# CTA Billetterie #}
+                        <div class="tour-cta">
+                            <a href="{{ event.url }}" target="_blank" rel="noopener noreferrer"
+                                class="btn btn-megan btn-sm px-3"
+                                aria-label="Acheter des billets pour {{ event.name }}">
+                                Tickets
+                            </a>
+                        </div>
+
+                    </div>{# /.tour-row #}
+                    {% endfor %}
+                </div>{# /.tour-list #}
+                {% endif %}
+
+            </div>
+        </section>
+
+        <section id="bibliography" class="py-5 bg-black border-top border-dark" aria-label="Bibliographie et sources">
+            <div class="container">
+
+                <h2 class="section-title mb-2">Sources</h2>
+                <p class="text-body-secondary mb-5" style="font-size: 0.9rem;">
+                    Références utilisées dans la rédaction de ce site.
+                    Les informations biographiques, discographiques et culturelles
+                    s'appuient sur des sources ouvertes et médias officiels.
+                </p>
+
+                <div class="row g-5">
+
+                    {# ── Colonne 1 : Biographie & Encyclopédies ── #}
+                    <div class="col-md-3">
+                        <h5 class="bib-category-title">Biographie</h5>
+                        <ul class="bib-list">
+                            <li>
+                                <a href="https://en.wikipedia.org/wiki/Megan_Thee_Stallion" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Wikipedia</span>
+                                    Megan Thee Stallion — Article biographique
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://fr.wikipedia.org/wiki/Megan_Thee_Stallion" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Wikipédia FR</span>
+                                    Megan Thee Stallion — Version française
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.allmusic.com/artist/megan-thee-stallion-mn0003614034"
+                                    target="_blank" rel="noopener" class="bib-link">
+                                    <span class="bib-source">AllMusic</span>
+                                    Biographie & discographie complète
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://people.com/tag/megan-thee-stallion/" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">People Magazine</span>
+                                    Articles biographiques et famille
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {# ── Colonne 2 : Discographie & Musique ── #}
+                    <div class="col-md-3">
+                        <h5 class="bib-category-title">Discographie</h5>
+                        <ul class="bib-list">
+                            <li>
+                                <a href="https://genius.com/artists/Megan-thee-stallion" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">Genius</span>
+                                    Paroles & annotations de tous les albums
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://open.spotify.com/artist/181bsRPaVXVlUKXrxwZfHK" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Spotify</span>
+                                    Discographie officielle & streams
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.billboard.com/artist/megan-thee-stallion/" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Billboard</span>
+                                    Classements et chartes Hot 100
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.rollingstone.com/music/music-news/megan-thee-stallion-album-megan-2024-1235037984/"
+                                    target="_blank" rel="noopener" class="bib-link">
+                                    <span class="bib-source">Rolling Stone</span>
+                                    Album Megan (2024) — Critique
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.deezer.com/en/artist/9635624" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">Deezer</span>
+                                    Catalogue complet
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {# ── Colonne 3 : Presse & Culture ── #}
+                    <div class="col-md-3">
+                        <h5 class="bib-category-title">Presse & Culture</h5>
+                        <ul class="bib-list">
+                            <li>
+                                <a href="https://www.booska-p.com/tag/megan-thee-stallion/" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Booska-P</span>
+                                    Actualités & signature Roc Nation
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.nme.com/artists/megan-thee-stallion" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">NME</span>
+                                    Plan B & analyses musicales
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.rollingstone.com/t/megan-thee-stallion/" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Rolling Stone</span>
+                                    Couvertures & interviews
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://media.gq.com/articles/megan-thee-stallion" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">GQ</span>
+                                    Style et interviews
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.byrdie.com/megan-thee-stallion-nails-8415131" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Byrdie</span>
+                                    Nail art — Tous les looks
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.papermag.com/?s=megan+thee+stallion" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">Paper Magazine</span>
+                                    Mode & esthétique
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {# ── Colonne 4 : Distinctions & Réseaux officiels ── #}
+                    <div class="col-md-3">
+                        <h5 class="bib-category-title">Distinctions & Réseaux</h5>
+                        <ul class="bib-list">
+                            <li>
+                                <a href="https://www.grammy.com/artists/megan-thee-stallion/21758" target="_blank"
+                                    rel="noopener" class="bib-link">
+                                    <span class="bib-source">Grammy Awards</span>
+                                    Palmarès officiel
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.crunchyroll.com/news/latest/2024/3/3/megan-thee-stallion-stuns-at-crunchyroll-anime-awards-2024"
+                                    target="_blank" rel="noopener" class="bib-link">
+                                    <span class="bib-source">Crunchyroll</span>
+                                    Anime Awards Tokyo 2024
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.instagram.com/theestallion/" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">Instagram</span>
+                                    @theestallion — Source primaire
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://twitter.com/theestallion" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">Twitter / X</span>
+                                    @theestallion — Source primaire
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://www.tiktok.com/@theestallion" target="_blank" rel="noopener"
+                                    class="bib-link">
+                                    <span class="bib-source">TikTok</span>
+                                    @theestallion — Source primaire
+                                </a>
+                            </li>
+                            <li>
+                                <a href="https://petethomas.foundation" target="_blank" rel="noopener" class="bib-link">
+                                    <span class="bib-source">Pete & Thomas</span>
+                                    Foundation officielle
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                {# Note de bas de bibliographie #}
+                <p class="mt-5 text-body-secondary"
+                    style="font-size: 0.78rem; border-top: 1px solid #1e1e1e; padding-top: 1.5rem;">
+                    Les images utilisées appartiennent à leurs auteurs respectifs et sont référencées à titre
+                    illustratif uniquement.
+                    Ce site est un projet éditorial indépendant, sans affiliation commerciale avec les artistes ou
+                    labels cités.
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ════════════════════════════════════════════════════════════
+         FOOTER
+         ════════════════════════════════════════════════════════════ -->
+    <footer class="text-body-secondary py-5 bg-black border-top border-dark">
+        <div class="container">
+            <p class="float-end mb-1">
+                <a href="#" class="text-decoration-none" style="color:var(--megan-pink)">Haut de page</a>
+            </p>
+            <p class="mb-1">&copy; And if the beat live you know lil Juju made it.</p>
+            <p class="mb-0">Stew à la prod.</p>
+        </div>
+    </footer>
+
+    <!-- ── Scripts JS ── -->
+    <script src="https://getbootstrap.com/docs/5.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        /**
+         * Initialisation de la librairie AOS (Animate On Scroll).
+         * Les animations se déclenchent une seule fois (once: true)
+         * avec un décalage de 120px par rapport au bas du viewport.
+         */
+        AOS.init({
+            duration: 900,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 120
+        });
+
+        /**
+         * togglePlayer — Affiche ou masque un player Spotify embarqué.
+         *
+         * @param {string} id - L'identifiant de l'élément <div> contenant l'iframe.
+         *
+         * Utilisé dans les cards de la section HITS. L'iframe n'est pas chargée
+         * tant que le bouton ▶ n'est pas cliqué, optimisant les performances initiales.
+         *
+         * @example
+         * // HTML : <button onclick="togglePlayer('player-wap')">▶</button>
+         * // Cache / affiche : <div id="player-wap" style="display:none;">...</div>
+         */
+        function togglePlayer(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
+</body>
+
+</html>
+{% endblock %}
