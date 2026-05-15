@@ -1,3 +1,867 @@
-body {
-    background-color: skyblue;
-}
+  /* ============================================================
+           VARIABLES CSS — Palette & Typographie
+           Centralise les couleurs et polices du projet.
+           ============================================================ */
+  :root {
+      --megan-black: #0a0a0a;
+      --megan-dark: #111111;
+      --megan-pink: #ff0050;
+      /* Couleur principale — accent agressif */
+      --megan-neon: #ff00cc;
+      /* Neon pour les glows */
+      --megan-grey: #b3b3b3;
+      /* Texte secondaire */
+      --megan-white: #ffffff;
+
+      --gradient-megan: linear-gradient(135deg, #ff0050, #ff00cc);
+
+      --font-headings: 'Anton', sans-serif;
+      --font-body: 'Poppins', sans-serif;
+  }
+
+
+  #navbarHeader {
+      margin-top: var(--bs-navbar-height);
+  }
+
+  section {
+      scroll-margin-top: 80px;
+  }
+
+  /* Container centré */
+
+  .auth-container {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .auth-container input.form-control:focus {
+      border-color: #ff2e88;
+      box-shadow: 0 0 8px rgba(255, 46, 136, 0.6);
+  }
+
+  /* Card */
+  .auth-card {
+      background: #111;
+      padding: 40px;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Titres */
+  .auth-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+  }
+
+  .auth-subtitle {
+      color: #aaa;
+      margin-bottom: 30px;
+  }
+
+  /* Champs */
+  .form-control {
+      background: #1a1a1a;
+      border: none;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+  }
+
+  .form-control:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px #ff3cac;
+  }
+
+  /* Labels */
+  .form-label {
+      font-size: 0.9rem;
+      color: #ccc;
+  }
+
+  /* Bouton */
+  .auth-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(45deg, #ff3cac, #784ba0);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: 0.3s;
+  }
+
+  .auth-btn:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+  }
+
+  /* ============================================================
+           BASE — Reset & Globals
+           ============================================================ */
+  html {
+      scroll-behavior: smooth;
+  }
+
+  body {
+      font-family: var(--font-body);
+      background: radial-gradient(circle at top, #111, #000);
+      color: var(--megan-grey);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .navbar-brand {
+      font-family: var(--font-headings);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+  }
+
+  p {
+      color: var(--megan-grey);
+      line-height: 1.6;
+  }
+
+  .lead {
+      color: var(--megan-pink);
+      font-weight: 500;
+  }
+
+  .highlight {
+      color: var(--megan-pink);
+      font-weight: 600;
+  }
+
+  a,
+  button {
+      transition: all 0.3s ease;
+  }
+
+  a:hover {
+      color: var(--megan-pink);
+  }
+
+  /* ============================================================
+           THÈME SOMBRE (défaut)
+           ============================================================ */
+  [data-bs-theme="dark"] body {
+      background-color: #0f0f0f;
+      color: #e0e0e0;
+  }
+
+  [data-bs-theme="dark"] .card {
+      background-color: #1a1a1a;
+      border-color: #333;
+  }
+
+  [data-bs-theme="dark"] .section-title {
+      color: var(--megan-pink);
+  }
+
+  [data-bs-theme="dark"] .section-title::after {
+      background: #fff;
+  }
+
+  /* ============================================================
+           THÈME CLAIR
+           ============================================================ */
+  [data-bs-theme="light"] body {
+      background-color: #f8f9fa;
+      color: #212529;
+  }
+
+  [data-bs-theme="light"] .card {
+      background-color: #fff;
+      border-color: #dee2e6;
+  }
+
+  [data-bs-theme="light"] .navbar {
+      background-color: #000 !important;
+  }
+
+  [data-bs-theme="light"] .section-title {
+      color: #cc0040;
+  }
+
+  [data-bs-theme="light"] .section-title::after {
+      background: #212529;
+  }
+
+  /* ============================================================
+           NAVIGATION
+           ============================================================ */
+  .navbar {
+      background: rgba(0, 0, 0, 0.9) !important;
+      backdrop-filter: blur(10px);
+  }
+
+  .navbar-brand {
+      color: var(--megan-pink) !important;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+  }
+
+
+  /* ── Liens d'ancre dans le burger ── */
+  .nav-anchor {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .nav-anchor:hover {
+      color: var(--megan-pink);
+      padding-left: 4px;
+  }
+
+  .nav-anchor-icon {
+      font-family: var(--font-headings);
+      font-size: 0.7rem;
+      color: var(--megan-pink);
+      opacity: 0.7;
+      min-width: 20px;
+  }
+
+  /* ── Liens sociaux dans le burger ── */
+  .social-link {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      color: #bbb;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+  }
+
+  .social-link:hover {
+      color: var(--megan-pink);
+  }
+
+  .social-link svg {
+      flex-shrink: 0;
+  }
+
+  /* ============================================================
+           SECTION TITLE — Titre de section avec underline dégradé
+           ============================================================ */
+  .section-title {
+      font-size: 3rem;
+      color: white;
+      position: relative;
+  }
+
+  .section-title::after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      margin-top: 10px;
+      background: var(--gradient-megan);
+      box-shadow: 0 0 15px var(--megan-neon);
+  }
+
+  /* ============================================================
+           BOUTON — Style Megan (gradient rose)
+           ============================================================ */
+  .btn-megan {
+      background: var(--gradient-megan);
+      border: none;
+      color: white;
+      font-weight: 600;
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+      transition: 0.3s;
+  }
+
+  .btn-megan:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(255, 0, 127, 0.9);
+  }
+
+  .hero-buttons .btn {
+      border-radius: 50px;
+      padding: 12px 28px;
+  }
+
+  /* ============================================================
+           HERO SECTION
+           Plein écran avec image de fond + overlay sombre dégradé.
+           ============================================================ */
+  .hero-section {
+      min-height: 100vh;
+      background:
+          linear-gradient(rgba(0, 0, 0, 0.235), rgba(0, 0, 0, 0.797)),
+          url('https://pbs.twimg.com/media/Ga095MIaMAAJKQ9.jpg') center / cover no-repeat;
+      position: relative;
+  }
+
+  .hero-section .container {
+      margin-top: 25vh;
+  }
+
+  .hero-tag {
+      color: var(--megan-pink);
+      letter-spacing: 3px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 10px;
+  }
+
+  .hero-title {
+      font-family: var(--font-headings);
+      font-size: clamp(1.5rem, 5.5vw, 4.5rem);
+      line-height: 0.9;
+      color: white;
+      text-transform: uppercase;
+      text-shadow:
+          0 0 10px rgba(255, 0, 127, 0.7),
+          0 0 30px rgba(255, 0, 127, 0.5);
+      margin-bottom: 2rem;
+  }
+
+  .hero-sub {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin: 20px 0 1.5rem;
+  }
+
+  /* ============================================================
+           BIO IMAGE — Utilisée dans les blocs parcours
+           ============================================================ */
+  .bio-img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ============================================================
+           CARTES GÉNÉRIQUES BOOTSTRAP
+           Surcharge légère pour le thème sombre.
+           ============================================================ */
+  .card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 0;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
+      border-color: var(--megan-pink);
+  }
+
+  .card-img-top {
+      height: 280px;
+      object-fit: cover;
+      aspect-ratio: 1 / 1;
+  }
+
+  /* ============================================================
+           SECTION DISCOGRAPHIE — Cartes albums avec overlay au hover
+           ============================================================ */
+  .discography-section {
+      background: #000;
+  }
+
+  .album-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      height: 300px;
+      /* Hauteur par défaut */
+  }
+
+  .album-card.large {
+      height: 400px;
+  }
+
+  .album-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+  }
+
+  /* Overlay qui remonte au hover */
+  .album-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+  }
+
+  .album-card:hover img {
+      transform: scale(1.1);
+  }
+
+  .album-card:hover .album-overlay {
+      transform: translateY(0);
+  }
+
+  .album-overlay h3 {
+      color: white;
+      font-family: var(--font-headings);
+      font-size: 2rem;
+  }
+
+  .album-overlay p {
+      color: #ccc;
+  }
+
+  .album-overlay small {
+      color: var(--megan-pink);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+  }
+
+  /* ============================================================
+           SECTION HITS — Cartes singles avec player Spotify masqué
+           Le bouton ▶ révèle l'iframe au clic via togglePlayer().
+           ============================================================ */
+  .hits-section {
+      background: radial-gradient(circle at center, #111, #000);
+  }
+
+  .hit-card {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      height: 400px;
+      /* Hauteur par défaut */
+  }
+
+  .hit-card.small {
+      height: 300px;
+  }
+
+  .hit-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+  }
+
+  /* Overlay opaque au hover */
+  .hit-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+  }
+
+  .hit-card:hover img {
+      transform: scale(1.1);
+  }
+
+  .hit-card:hover .hit-overlay {
+      opacity: 1;
+  }
+
+  .hit-overlay h3 {
+      color: white;
+      font-family: var(--font-headings);
+      font-size: 2rem;
+  }
+
+  .hit-overlay span {
+      color: var(--megan-pink);
+      font-size: 0.9rem;
+  }
+
+  /* Bouton play centré — animation pulse */
+  .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: var(--gradient-megan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+      border: none;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      animation: pulse 2s infinite;
+  }
+
+  .hit-card:hover .play-btn {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+  }
+
+  @keyframes pulse {
+      0% {
+          box-shadow: 0 0 0 0 rgba(255, 0, 127, 0.7);
+      }
+
+      70% {
+          box-shadow: 0 0 0 20px rgba(255, 0, 127, 0);
+      }
+
+      100% {
+          box-shadow: 0 0 0 0 rgba(255, 0, 127, 0);
+      }
+  }
+
+  /* ============================================================
+           SECTION COLLABORATIONS
+           Cercles avec photo + nom + titre du collab.
+           ============================================================ */
+  .collab-card {
+      text-align: center;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid transparent;
+      transition: 0.3s;
+  }
+
+  .collab-card:hover {
+      border-color: var(--megan-pink);
+      background: rgba(255, 0, 127, 0.05);
+  }
+
+  [data-bs-theme="light"] .collab-card {
+      background: rgba(0, 0, 0, 0.03);
+      border: 1px solid #eee;
+  }
+
+  .collab-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--megan-pink);
+      margin-bottom: 1rem;
+  }
+
+  /* ============================================================
+           SECTION PERSONAS — Cartes avec fond CSS + zoom au hover
+           Chaque variante (tina/hotgirl/suga) a sa propre image.
+           ============================================================ */
+  .persona-section {
+      background: #000;
+  }
+
+  .persona-card {
+      height: 400px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      overflow: hidden;
+      cursor: pointer;
+  }
+
+  /* Overlay sombre par-dessus le fond */
+  .persona-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+  }
+
+  /* Couche image en fond absolu (permet le zoom indépendant) */
+  .persona-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.5s ease;
+  }
+
+  .persona-card:hover .persona-bg {
+      transform: scale(1.1);
+  }
+
+  .persona-card:hover {
+      box-shadow: 0 0 40px rgba(255, 0, 127, 0.5);
+  }
+
+  /* Variante Tina Snow */
+  .persona-card.tina .persona-bg {
+      background-image: url('https://pbs.twimg.com/media/Dfgj-s8U8AEZolP.jpg');
+      filter: contrast(120%) saturate(140%);
+  }
+
+  .persona-card.tina::before {
+      background: linear-gradient(to top, rgba(255, 0, 80, 0.6), rgba(0, 0, 0, 0.8));
+  }
+
+  /* Variante Hot Girl Meg */
+  .persona-card.hotgirl .persona-bg {
+      background-image: url('https://bloximages.newyork1.vip.townnews.com/nola.com/content/tncms/assets/v3/editorial/f/55/f5541e0a-29cd-11ef-a6db-ebb0556cc644/666b682f78d9e.image.jpg?crop=905%2C905%2C419%2C114&resize=1200%2C1200&order=crop%2Cresize');
+      filter: brightness(110%) saturate(120%);
+  }
+
+  .persona-card.hotgirl::before {
+      background: linear-gradient(to top, rgba(255, 0, 200, 0.4), rgba(0, 0, 0, 0.7));
+  }
+
+  /* Variante Suga */
+  .persona-card.suga .persona-bg {
+      background-image: url('https://m.media-amazon.com/images/M/MV5BYjMyM2ViN2ItOWIyYi00YzM4LWExMzQtM2U5NDQ1ZTc0NjU1XkEyXkFqcGc@._V1_.jpg');
+      filter: contrast(90%) saturate(110%);
+  }
+
+  .persona-card.suga::before {
+      background: linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.8));
+  }
+
+  /* Contenu textuel au-dessus de l'overlay */
+  .persona-content {
+      position: relative;
+      z-index: 2;
+  }
+
+  .persona-content h3 {
+      font-family: var(--font-headings);
+      font-size: 2rem;
+      color: white;
+  }
+
+  .persona-content p {
+      color: var(--megan-pink);
+  }
+
+  /* ============================================================
+           SECTION LEGACY — Cartes de chiffres clés (impact)
+           ============================================================ */
+  .legacy-card {
+      padding: 2rem;
+      border: 1px solid #222;
+      background: #111;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .legacy-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(255, 0, 127, 0.5);
+  }
+
+  .legacy-card h1 {
+      font-size: 4rem;
+      color: var(--megan-pink);
+  }
+
+  .legacy-card p {
+      color: #ccc;
+      text-transform: uppercase;
+  }
+
+  /* ============================================================
+           SECTION OUTFITS — Grille portrait 3/4
+           object-position: top pour privilégier le visage/corps entier.
+           ============================================================ */
+  .outfit-card {
+      border: 1px solid #222;
+      background: #111;
+      overflow: hidden;
+      border-radius: 6px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .outfit-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 0 25px rgba(255, 0, 80, 0.4);
+      border-color: var(--megan-pink);
+  }
+
+  .outfit-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.4s ease;
+  }
+
+  .outfit-card:hover .outfit-img {
+      transform: scale(1.04);
+  }
+
+  /* ============================================================
+           SECTION NAIL ART — Cartes avec label en overlay bas-gauche
+           ============================================================ */
+  .nail-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+  }
+
+  .nail-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+  }
+
+  .nail-card:hover img {
+      transform: scale(1.05);
+  }
+
+  .nail-card span {
+      position: absolute;
+      bottom: 10px;
+      left: 15px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  }
+
+  /* ============================================================
+           AOS — Désactiver pointer-events pendant l'animation
+           ============================================================ */
+  [data-aos] {
+      pointer-events: none;
+      transition-timing-function: cubic-bezier(0.25, 1, 0.5, 1) !important;
+  }
+
+  [data-aos].aos-animate {
+      pointer-events: auto;
+  }
+
+  /* ── Section Tour ── */
+  .tour-list {
+      border-top: 1px solid #222;
+  }
+
+  .tour-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid #1e1e1e;
+      transition: background 0.2s ease;
+  }
+
+  .tour-row:hover {
+      background: rgba(255, 0, 80, 0.04);
+      padding-left: 0.5rem;
+  }
+
+  /* Bloc date — jour / mois / année empilés */
+  .tour-date {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 48px;
+      text-align: center;
+  }
+
+  .tour-day {
+      font-family: var(--font-headings);
+      font-size: 1.8rem;
+      color: var(--megan-pink);
+      line-height: 1;
+  }
+
+  .tour-month {
+      font-size: 0.7rem;
+      color: var(--megan-grey);
+      letter-spacing: 2px;
+  }
+
+  .tour-year {
+      font-size: 0.65rem;
+      color: #555;
+  }
+
+  /* Lieu */
+  .tour-location {
+      flex: 1;
+  }
+
+  /* Nom de l'événement */
+  .tour-event-name {
+      flex: 1;
+  }
+
+  /* ── Titre de catégorie bibliographique ── */
+  .bib-category-title {
+      font-family: var(--font-headings);
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--megan-pink);
+      border-bottom: 1px solid #222;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+  }
+
+  /* ── Liste de sources ── */
+  .bib-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  }
+
+  .bib-list li {
+      margin-bottom: 0.75rem;
+  }
+
+  /* ── Lien individuel de source ── */
+  .bib-link {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      color: #888;
+      text-decoration: none;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .bib-link:hover {
+      color: #ccc;
+      padding-left: 4px;
+  }
+
+  /* ── Badge source (nom du média) ── */
+  .bib-source {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--megan-pink);
+      opacity: 0.8;
+  }

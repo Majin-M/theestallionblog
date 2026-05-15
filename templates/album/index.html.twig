@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Albums{% endblock %}
+
+{% block body %}
+ <!-- ────────────────────────────────────────────────────────
+             DISCOGRAPHIE — Grille d'albums avec overlay Spotify
+             Chaque carte révèle un iframe embed au hover.
+             ──────────────────────────────────────────────────────── -->
+
+<section id="discography" class="discography-section py-5" aria-label="Discographie">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Eras</h2>
+
+                <div class="row g-4">
+
+                    {# ── Album : Tina Snow (2018) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/5001121ba4d590fa25e728ebc5c4dccb.999x999x1.png"
+                                alt="Tina Snow">
+                            <div class="album-overlay">
+                                <h3>Tina Snow</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/26jEIrN7WSAnVQXXUmLRSN?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Tina Snow sur Spotify"></iframe>
+                                <p>2018 • Alter Ego Era</p>
+                                  <div class="album-actions">
+                                <a href="https://music.apple.com/fr/album/MEGAN" target="_blank" class="btn-action">
+                                    💿 Buy
+                                </a>
+
+                                <a href="https://www.amazon.com/dp/B07L6VCWZ9/ref=sr_1_1?sr=8-1" target="_blank"
+                                    class="btn-action">
+                                    🛒 Official Store
+                                </a>
+
+                                <button class="btn-action" onclick="togglePlayer(this)">
+                                    ▶ Play
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Fever (2019) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/5c93429d0039f046f8636cb36f324390.693x693x1.png"
+                                alt="Fever">
+                            <div class="album-overlay">
+                                <h3>Fever</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/5WLquTz7nUnsHCj80b6wci?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Fever sur Spotify"></iframe>
+                                <p>2019 • Hot Girl Summer begins</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Suga (2020) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="album-card">
+                            <img src="https://images.genius.com/bd757918fc4dac7583266b3b554434a0.1000x1000x1.jpg"
+                                alt="Suga">
+                            <div class="album-overlay">
+                                <h3>Suga</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/6Lo6ylJg4qbFfxicPEOzMI?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Suga sur Spotify"></iframe>
+                                <p>2020 • Savage Era</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Good News (2020) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                        <div class="album-card large">
+                            <img src="https://images.genius.com/d30190e9e0a78f306b4ee9a9c6dcb8ab.1000x1000x1.png"
+                                alt="Good News">
+                            <div class="album-overlay">
+                                <h3>Good News</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/0KjckH1EE6HRRurMIXSc0r?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Good News sur Spotify"></iframe>
+                                <p>Includes <span class="highlight">Savage Remix</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Traumazine (2022) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+                        <div class="album-card large">
+                            <img src="https://images.genius.com/0d83bd99e69b735e5bb68d1f618ce74c.1000x1000x1.jpg"
+                                alt="Traumazine">
+                            <div class="album-overlay">
+                                <h3>Traumazine</h3>
+                                <iframe style="border-radius:12px"
+                                    src="https://open.spotify.com/embed/album/4YP0h2KGDb20eJuStnBvim?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Traumazine sur Spotify"></iframe>
+                                <p>Raw. Personal. Powerful.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Something for Thee Hotties (2021) ── #}
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/5b557b9a4a1bcb66986f0cc1fffbc4c5/0x1900-000000-80-0-0.jpg"
+                                alt="Something for Thee Hotties">
+                            <div class="album-overlay">
+                                <h3>Something for Thee Hotties</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/6B26OzQRObxAp1tbf8jeTq?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Something for Thee Hotties sur Spotify"></iframe>
+                                <p>Freestyles. Energy. No filter.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Megan (2024) ── #}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="700">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/b65b2109e4984368218927dba7b19895/1900x1900-000000-80-0-0.jpg"
+                                alt="Megan">
+                            <div class="album-overlay">
+                                <h3>Megan</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/0FzWvaeMBfKBCqxHTLVlB8?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Megan sur Spotify"></iframe>
+                                <p>2024 • Rebirth Era</p>
+                                <small class="highlight">Hiss • Cobra • Boa</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# ── Album : Megan Act II (2024) ── #}
+                    <div class="col-md-6" data-aos="fade-up" data-aos-delay="800">
+                        <div class="album-card large">
+                            <img src="https://cdn-images.dzcdn.net/images/cover/ffbca6c521268baede9344848de1ac8b/1900x1900-000000-81-0-0.jpg"
+                                alt="Megan Act II">
+                            <div class="album-overlay">
+                                <h3>Megan: Act II</h3>
+                                <iframe style="border-radius:12px; margin-top:10px"
+                                    src="https://open.spotify.com/embed/album/7KYpVsgw7yqbfmGBp9gYiR?utm_source=generator"
+                                    width="100%" height="152" frameborder="0" allow="autoplay; encrypted-media"
+                                    loading="lazy" title="Megan Act II sur Spotify"></iframe>
+                                <p>2024 • Deluxe / Second Act</p>
+                                <small class="highlight">Bigger in Texas • Neva Play</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>{# /.row — albums #}
+            </div>
+        </section>
+{% endblock %}

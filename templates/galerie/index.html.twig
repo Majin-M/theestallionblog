@@ -1,0 +1,316 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello GalerieController!{% endblock %}
+
+{% block body %}
+        <!-- ────────────────────────────────────────────────────────
+             HERO — Introduction plein écran
+             ──────────────────────────────────────────────────────── -->
+        <section class="hero-section d-flex align-items-center" aria-label="Hero">
+            <div class="container text-center">
+                <p class="hero-tag">The Hot Girl Coach</p>
+                <h1 class="hero-title">Real<br>Hot Girl Shit</h1>
+                <p class="hero-sub">
+                    Houston. Power. No Apologies.<br>
+                    Alter ego : <span class="highlight">Tina Snow</span>
+                </p>
+                <div class="hero-buttons mt-4">
+                    <a href="{{ path('app_projet') }}" class="btn btn-megan btn-lg px-4 me-2">Enter the Era</a>
+                    <a href="#tour" class="btn btn-outline-light btn-lg px-4">See Live</a>
+                </div>
+            </div>
+        </section>
+
+             <!-- ────────────────────────────────────────────────────────
+             OUTFITS — Grille portrait 3/4 (lookbook)
+             aspect-ratio: 3/4 + object-position: top
+             pour afficher le corps entier plutôt qu'un recadrage carré.
+             ──────────────────────────────────────────────────────── -->
+        <section id="outfits" class="py-5" aria-label="Outfits et looks">
+            <div class="container">
+                <h2 class="section-title text-center mb-5">Outfits</h2>
+
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-3">
+                    {# Chaque .outfit-card contient une image portrait 3/4 #}
+
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://assets.teenvogue.com/photos/6717c0e5405238231a7aca2a/master/w_1600%2Cc_limit/2180161267"
+                                class="outfit-img" alt="Outfit 1" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img src="https://pbs.twimg.com/media/HBjKgC2XoAAX-A7.jpg"
+                                class="outfit-img" alt="Outfit 2" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/4d/f9/dd/4df9ddfad28e5f876b65f6eff3c82758.jpg"
+                                class="outfit-img" alt="Outfit 3" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://preview.redd.it/hi-any-id-on-this-top-and-also-this-dress-megan-thee-v0-7dm64pg54t1e1.jpg?width=640&crop=smart&auto=webp&s=0481895ac39ced3fd42667d0c9c10d465ba99d3a"
+                                class="outfit-img" alt="Outfit 4" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/f2/b5/d6/f2b5d6a2d9813c661e3b45d284f33253.jpg"
+                                class="outfit-img" alt="Outfit 5" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/39/7a/bd/397abd4ab4817fb35ea77c66c340e760.jpg"
+                                class="outfit-img" alt="Outfit 6" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/7d/e2/62/7de262b62fb52dcd84f5c807466e4731.jpg"
+                                class="outfit-img" alt="Outfit 7" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/c5/63/ed/c563eda2bfe0474ffcb1f697cb9e2b76.jpg"
+                                class="outfit-img" alt="Outfit 8" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/2b/9e/7b/2b9e7ba60bcb8f0d7dd5f8d75fc50648.jpg"
+                                class="outfit-img" alt="Outfit 9" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/64/cd/93/64cd93fc010df1b309cdd5e4d993d065.jpg"
+                                class="outfit-img" alt="Outfit 10" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/63/f4/9d/63f49d5ee212b1592cccfd4b538f9a3e.jpg"
+                                class="outfit-img" alt="Outfit 11" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/06/7c/f0/067cf04515a710e27b13842a9d018d46.jpg"
+                                class="outfit-img" alt="Outfit 12" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/82/2c/e1/822ce101a7bfea3a47cae8e1d3caeafe.jpg"
+                                class="outfit-img" alt="Outfit 13" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/736x/25/7c/f9/257cf9f9e0880b2bab076fa87ad78f1d.jpg"
+                                class="outfit-img" alt="Outfit 14" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://i.pinimg.com/1200x/7c/74/8a/7c748ad50bad950e21d4f601b5197d73.jpg"
+                                class="outfit-img" alt="Outfit 15" loading="lazy"></div>
+                    </div>
+                    <div class="col">
+                        <div class="outfit-card"><img
+                                src="https://poster-girl.com/cdn/shop/files/2_-_MEGAN_THEE_STALLION.jpg?crop=center&height=1296&v=1730994897&width=1080"
+                                class="outfit-img" alt="Outfit 16" loading="lazy"></div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             NAIL ART — Grille 3 colonnes avec label en overlay
+             ──────────────────────────────────────────────────────── -->
+        <section id="nails" class="py-5 bg-black" aria-label="Nail art">
+            <div class="container">
+                <h2 class="section-title text-center mb-3">Nail Art</h2>
+                <p class="text-center mb-5">More than nails.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/0az8HZuKcaIaR1Rqxow0rOuRcTA=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg2-8d6751be12bd4adbab035472191458d7.jpg"
+                                alt="Crystal Nails" loading="lazy"><span>Crystal Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/wKYfMp417YQ1ciPj_TbHhnFJdIE=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg5-8c1996c1108a495bb8e4fe7707baf87f.jpg"
+                                alt="Golden Nails" loading="lazy"><span>Golden & Gilded Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/zz5yGOGgz019eQ8eQEKNdgWxSKQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg6-9fe4323cfe174301abae3048f27a07a0.jpg"
+                                alt="Regal Nails" loading="lazy"><span>Regal Nails</span></div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/XLgIaH00J-A6RaxuHSB9rERceGg=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg7-1dcf43434eb74a558e254ba8fdf4145a.jpg"
+                                alt="Super Mario Nails" loading="lazy"><span>Super Mario Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/r3gSsGbvw3xq2nkOx5tFo8zypMI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg8-1c7a303fc228443d93d4a673b63e000c.jpg"
+                                alt="Electric Green Nails" loading="lazy"><span>Electric Green French Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/qLU9uFpZxEtmheQhe-4q4elT9TI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg11-f353a8f876dc460f891137582a6c709b.jpg"
+                                alt="Floral Nails" loading="lazy"><span>Fun Floral Nails</span></div>
+                    </div>
+                </div>
+
+                <div class="row g-4 mt-2">
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://i.redd.it/fashion-highlight-megan-thee-stallions-nails-v0-w0rjma8in53c1.jpg?width=750&format=pjpg&auto=webp&s=e552f7bafa00150f0d2e4cb84ff2878cdc4ae806"
+                                alt="Barbie Nails" loading="lazy"><span>Barbie Aura Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/Cd_Ajnl9lR2UdMssB4hfpt8wTh4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/meg17-8a2e4db25806418aa4f84830d60026fb.jpg"
+                                alt="Galaxy Nails" loading="lazy"><span>Galaxy Nails</span></div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="nail-card"><img
+                                src="https://www.byrdie.com/thmb/5dRnhmYrT_dRl3R4LWvQs1Cef2A=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/meg15-22c4ca15bf8143af98fe4f8eccc9fbb0.jpg"
+                                alt="Cat-Eye Nails" loading="lazy"><span>Cat-Eye Nails</span></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ────────────────────────────────────────────────────────
+             COSPLAYS — Grille Bootstrap cards avec personnage identifié
+             ──────────────────────────────────────────────────────── -->
+        <section id="cosplays" class="py-5 container" aria-label="Cosplays anime et jeux vidéo">
+            <h2 class="section-title text-center mb-5">Cosplays</h2>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+                {# Cosplay 1 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/megan-thee-stallion-looks-stunning-dressed-as-jolyne-cujoh-v0-zcdkmy334knc1.jpg?width=1284&format=pjpg&auto=webp&s=a17fdb31b11a8c434eb9bef3e68449f7e8f6fe92"
+                            class="card-img-top" alt="Jolyne Cujoh" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Jolyne Cujoh – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 2 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/megans-bizarre-adventure-stand-hot-girl-v0-4g0x3qvl4yxd1.jpg?width=2048&format=pjpg&auto=webp&s=3d09120ac173244f8fe33c87a14829d665fdb5ac"
+                            class="card-img-top" alt="Trish Una" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Trish Una – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 3 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://i.redd.it/meg-the-stallion-cosplays-gojo-v0-undkklvesslc1.jpg?width=1166&format=pjpg&auto=webp&s=8e8f565caae333bf67339697be564186affa5693"
+                            class="card-img-top" alt="Gojo Satoru" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Gojo Satoru – Jujutsu Kaisen</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 4 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://assets.teenvogue.com/photos/65e33bc768ba378e363db64a/1:1/w_828,h_828,c_limit/Megan%20Thee%20Stallion%20at%20the%202024%20Crunchyroll%20Anime%20Awards%20on%20March%202,%202024%20in%20Tokyo,%20Japan_1.JPG"
+                            class="card-img-top" alt="Crunchyroll Awards 2024" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Bruno Bucciarati – JoJo's Bizarre Adventure</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 5 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200_webp/7437b0156360243.636569f2b795e.jpg"
+                            class="card-img-top" alt="Mirko" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Mirko – My Hero Academia</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 6 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://www.papermag.com/media-library/image.jpg?id=20551796&width=1200&height=1200&coordinates=0,89,0,1161"
+                            class="card-img-top" alt="Todoroki Shoto" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Todoroki Shoto – My Hero Academia</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 7 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/F9tT9MUa8AAb4qn.jpg" class="card-img-top"
+                            alt="Death the Kid" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Death The Kid – Soul Eater</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 8 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/G4glqeSW0AInrUi.jpg" class="card-img-top" alt="Choso"
+                            loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Choso – Jujutsu Kaisen</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 9 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://pbs.twimg.com/media/G4mfrRxWcAAYCWB.jpg" class="card-img-top"
+                            alt="Drolta Tzuentes" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Drolta Tzuentes – Castlevania: Nocturne</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 10 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://cdn.mos.cms.futurecdn.net/XGbEizwmcXEBBf5yesLiCN.jpg" class="card-img-top"
+                            alt="Mileena" loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Mileena – Mortal Kombat</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# Cosplay 11 #}
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="https://f4.bcbits.com/img/a1379647602_10.jpg" class="card-img-top" alt="Sailor Moon"
+                            loading="lazy">
+                        <div class="card-body">
+                            <p class="card-text small">Sailor Moon – Sailor Moon</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+{% endblock %}

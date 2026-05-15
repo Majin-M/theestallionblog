@@ -1,24 +1,548 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Site de présentation de Megan Thee Stallion — Albums, Hits et Collabs Internationales.">
+    <meta name="author" content="Design basé sur Bootstrap">
+    <title>Megan Thee Stallion · The H-Town Hottie</title>
+    {% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="{{ asset('styles/app.css') }}" rel="stylesheet">
+    {% endblock %}
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block javascripts %}
+    <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
+    {% endblock %}
+
+    <style>
+        /* ════════════════════════════════════════════════════════════
+           FIX MENU BURGER — Le menu collapse est rendu fixed
+           pour rester accessible quelle que soit la position de scroll.
+           La navbar mesure environ 56px, on positionne le menu juste en dessous.
+           ════════════════════════════════════════════════════════════ */
+        #navbarHeader {
+            position: fixed;
+            top: 56px;
+            /* hauteur exacte de la navbar */
+            left: 0;
+            right: 0;
+            z-index: 1029;
+            /* juste sous la navbar (z-index: 1030) */
+            max-height: calc(100vh - 56px);
+            /* évite de dépasser l'écran */
+            overflow-y: auto;
+            /* scroll interne si le menu est très long */
+        }
+
+        /* ── Icône panier dans la navbar ── */
+        .cart-btn {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            text-decoration: none;
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+
+        .cart-btn:hover {
+            border-color: var(--megan-pink);
+            background: rgba(255, 0, 80, 0.1);
+            color: white;
+        }
+
+        /* Badge rouge affichant le nombre d'articles */
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--megan-pink);
+            color: white;
+            font-size: 0.55rem;
+            font-weight: 700;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 3px;
+            line-height: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ════════════════════════════════════════════════════════════
+         HEADER — Navbar fixe + menu collapse
+         ════════════════════════════════════════════════════════════ -->
+    <header>
+        <nav class="navbar navbar-dark bg-black shadow-sm fixed-top">
+            <div class="container">
+
+                {# ── Partie gauche : user + panier ── #}
+                <div class="d-flex align-items-center gap-3">
+
+                    {% if app.user %}
+
+                    {# Dropdown utilisateur #}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            {{ app.user.firstname }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="#">Mon profil</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ path('app_logout') }}">
+                                    Déconnexion
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {# ── Icône panier (visible uniquement si connecté) ──
+                    On lit le panier directement depuis la session Twig
+                    pour afficher le nombre d'articles sans passer par le contrôleur. #}
+                    {% set sessionCart = app.session.get('cart') ?? [] %}
+                    {# On additionne toutes les quantités du panier #}
+                    {% set cartCount = 0 %}
+                    {% for qty in sessionCart %}
+                    {% set cartCount = cartCount + qty %}
+                    {% endfor %}
+
+                    <a href="{{ path('app_cart_index') }}" class="cart-btn"
+                        aria-label="Mon panier ({{ cartCount }} article{{ cartCount > 1 ? 's' : '' }})">
+                        <i class="bi bi-bag"></i>
+                        {% if cartCount > 0 %}
+                        <span class="cart-badge">{{ cartCount }}</span>
+                        {% endif %}
+                    </a>
+
+                    {% else %}
+
+                    <a href="{{ path('app_login') }}" class="btn btn-outline-light">Connexion</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-megan">Inscription</a>
+
+                    {% endif %}
+
+                </div>
+
+                {# Logo / Brand #}
+                <a href="{{ path('app_home') }}" class="navbar-brand">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        class="bi bi-mic-fill" viewBox="0 0 16 16" style="color:var(--megan-pink)" aria-hidden="true">
+                        <path d="M5 3a3 3 0 0 1 6 0v5a3 3 0 0 1-6 0V3z" />
+                        <path
+                            d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5z" />
+                    </svg>
+                    <span>Megan Thee Stallion</span>
+                </a>
+
+                {# ── Barre de recherche ── #}
+                <form action="{{ path('app_search') }}" method="get"
+                    class="d-flex align-items-center gap-2 mx-3 flex-grow-1" style="max-width: 340px;" role="search">
+                    <div class="input-group input-group-sm">
+                        <input type="search" name="q" value="{{ app.request.query.get('q') }}"
+                            class="form-control bg-dark border-secondary text-white"
+                            placeholder="Rechercher un projet, cosplay…" aria-label="Recherche" autocomplete="off">
+                        <button class="btn btn-outline-secondary" type="submit" aria-label="Lancer la recherche">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                {# Burger #}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            </div>
+        </nav>
+
+        {# ── Menu collapse — maintenant fixed grâce au CSS ci-dessus ──
+        Il apparaît juste sous la navbar quelle que soit la position de scroll. #}
+        <div class="collapse text-bg-dark" id="navbarHeader">
+            <div class="container py-4">
+                <div class="row">
+
+                    {# ── Colonne 1 : Navigation ── #}
+                    <div class="col-sm-5 col-md-4">
+                        <h4 class="text-white mb-3">Navigation</h4>
+                        <nav aria-label="Sections de la page">
+                            <ul class="list-unstyled mb-0" style="line-height: 2.2rem;">
+                                <li><a href="#parcours" class="nav-anchor"><span class="nav-anchor-icon">01</span> Son
+                                        Parcours</a></li>
+                                <li><a href="{{ path('app_projet') }}" class="nav-anchor"><span
+                                            class="nav-anchor-icon">02</span> Projets</a></li>
+                                <li><a href="#tour" class="nav-anchor"><span class="nav-anchor-icon">03</span> Tour
+                                        Dates</a></li>
+                                <li><a href="#collabs" class="nav-anchor"><span class="nav-anchor-icon">04</span>
+                                        Collaborations</a></li>
+                                <li><a href="#impact" class="nav-anchor"><span class="nav-anchor-icon">05</span> Her
+                                        Impact</a></li>
+                                <li><a href="{{ path('app_galerie') }}" class="nav-anchor"><span
+                                            class="nav-anchor-icon">06</span> Galerie</a></li>
+
+                            </ul>
+                        </nav>
+                    </div>
+
+                    {# ── Colonne 2 : À propos ── #}
+                    <div class="col-sm-4 col-md-4 py-4 py-sm-0">
+                        <h4 class="text-white mb-3">À propos</h4>
+                        <p class="text-body-secondary" style="font-size: 0.9rem; line-height: 1.6;">
+                            Megan Jovon Ruth Pete, connue sous le nom de Megan Thee Stallion,
+                            est une rappeuse, auteure-compositrice et entrepreneuse américaine
+                            originaire de Houston, Texas.
+                        </p>
+                    </div>
+
+                    {# ── Colonne 3 : Réseaux sociaux ── #}
+                    <div class="col-sm-3 col-md-4 py-4 py-sm-0">
+                        <h4 class="text-white mb-3">Réseaux</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <a href="https://www.instagram.com/theestallion/" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <i class="bi bi-instagram"></i> Instagram
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://twitter.com/theestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        viewBox="0 0 16 16" aria-hidden="true">
+                                        <path
+                                            d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865z" />
+                                    </svg>
+                                    Twitter / X
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.tiktok.com/@theestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <i class="bi bi-tiktok"></i> TikTok
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.facebook.com/MeganTheeStallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <i class="bi bi-facebook"></i> Facebook
+                                </a>
+                            </li>
+                            <li class="mb-2">
+                                <a href="https://www.youtube.com/@megantheestallion" target="_blank" rel="noopener"
+                                    class="social-link">
+                                    <i class="bi bi-youtube"></i> YouTube
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- SVG Sprite Bootstrap Icons (toggle thème) -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+            <symbol id="moon-stars-fill" viewBox="0 0 16 16">
+                <path
+                    d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z" />
+                <path
+                    d="M10.794 3.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387a1.734 1.734 0 0 0-1.097 1.097l-.387 1.162a.217.217 0 0 1-.412 0l-.387-1.162A1.734 1.734 0 0 0 9.31 6.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387a1.734 1.734 0 0 0 1.097-1.097l.387-1.162zM13.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732l-.774-.258a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L13.863.1z" />
+            </symbol>
+            <symbol id="sun-fill" viewBox="0 0 16 16">
+                <path
+                    d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z" />
+            </symbol>
+            <symbol id="circle-half" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 0 8 1v14zm0 1A8 8 0 1 1 8 0a8 8 0 0 1 0 16z" />
+            </symbol>
+        </svg>
+
+        <!-- Toggle thème — bouton flottant bas-droite -->
+        <div class="dropdown position-fixed bottom-0 end-0 mb-3 me-3 bd-mode-toggle">
+            <button class="btn btn-megan py-2 dropdown-toggle d-flex align-items-center" id="bd-theme" type="button"
+                aria-expanded="false" data-bs-toggle="dropdown" aria-label="Toggle theme">
+                <svg class="bi my-1 theme-icon-active" width="1em" height="1em">
+                    <use href="#moon-stars-fill"></use>
+                </svg>
+                <span class="visually-hidden" id="bd-theme-text">Toggle theme</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="bd-theme-text">
+                <li>
+                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                            <use href="#sun-fill"></use>
+                        </svg> Light
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item d-flex align-items-center active"
+                        data-bs-theme-value="dark">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                            <use href="#moon-stars-fill"></use>
+                        </svg> Dark
+                    </button>
+                </li>
+                <li>
+                    <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em">
+                            <use href="#circle-half"></use>
+                        </svg> Auto
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+    </header>
+
+    {% block body %}{% endblock %}
+
+    <section id="bibliography" class="py-5 bg-black border-top border-dark" aria-label="Bibliographie et sources">
+        <div class="container">
+
+            <h2 class="section-title mb-2">Sources</h2>
+            <p class="text-body-secondary mb-5" style="font-size: 0.9rem;">
+                Références utilisées dans la rédaction de ce site.
+                Les informations biographiques, discographiques et culturelles
+                s'appuient sur des sources ouvertes et médias officiels.
+            </p>
+
+            <div class="row g-5">
+
+                {# ── Colonne 1 : Biographie & Encyclopédies ── #}
+                <div class="col-md-3">
+                    <h5 class="bib-category-title">Biographie</h5>
+                    <ul class="bib-list">
+                        <li>
+                            <a href="https://en.wikipedia.org/wiki/Megan_Thee_Stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Wikipedia</span>
+                                Megan Thee Stallion — Article biographique
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://fr.wikipedia.org/wiki/Megan_Thee_Stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Wikipédia FR</span>
+                                Megan Thee Stallion — Version française
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.allmusic.com/artist/megan-thee-stallion-mn0003614034" target="_blank"
+                                rel="noopener" class="bib-link">
+                                <span class="bib-source">AllMusic</span>
+                                Biographie & discographie complète
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://people.com/tag/megan-thee-stallion/" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">People Magazine</span>
+                                Articles biographiques et famille
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                {# ── Colonne 2 : Discographie & Musique ── #}
+                <div class="col-md-3">
+                    <h5 class="bib-category-title">Discographie</h5>
+                    <ul class="bib-list">
+                        <li>
+                            <a href="https://genius.com/artists/Megan-thee-stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Genius</span>
+                                Paroles & annotations de tous les albums
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://open.spotify.com/artist/181bsRPaVXVlUKXrxwZfHK" target="_blank"
+                                rel="noopener" class="bib-link">
+                                <span class="bib-source">Spotify</span>
+                                Discographie officielle & streams
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.billboard.com/artist/megan-thee-stallion/" target="_blank"
+                                rel="noopener" class="bib-link">
+                                <span class="bib-source">Billboard</span>
+                                Classements et chartes Hot 100
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.rollingstone.com/music/music-news/megan-thee-stallion-album-megan-2024-1235037984/"
+                                target="_blank" rel="noopener" class="bib-link">
+                                <span class="bib-source">Rolling Stone</span>
+                                Album Megan (2024) — Critique
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.deezer.com/en/artist/9635624" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Deezer</span>
+                                Catalogue complet
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                {# ── Colonne 3 : Presse & Culture ── #}
+                <div class="col-md-3">
+                    <h5 class="bib-category-title">Presse & Culture</h5>
+                    <ul class="bib-list">
+                        <li>
+                            <a href="https://www.booska-p.com/tag/megan-thee-stallion/" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Booska-P</span>
+                                Actualités & signature Roc Nation
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.nme.com/artists/megan-thee-stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">NME</span>
+                                Plan B & analyses musicales
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.rollingstone.com/t/megan-thee-stallion/" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Rolling Stone</span>
+                                Couvertures & interviews
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://media.gq.com/articles/megan-thee-stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">GQ</span>
+                                Style et interviews
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.byrdie.com/megan-thee-stallion-nails-8415131" target="_blank"
+                                rel="noopener" class="bib-link">
+                                <span class="bib-source">Byrdie</span>
+                                Nail art — Tous les looks
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.papermag.com/?s=megan+thee+stallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Paper Magazine</span>
+                                Mode & esthétique
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                {# ── Colonne 4 : Distinctions & Réseaux officiels ── #}
+                <div class="col-md-3">
+                    <h5 class="bib-category-title">Distinctions & Réseaux</h5>
+                    <ul class="bib-list">
+                        <li>
+                            <a href="https://www.grammy.com/artists/megan-thee-stallion/21758" target="_blank"
+                                rel="noopener" class="bib-link">
+                                <span class="bib-source">Grammy Awards</span>
+                                Palmarès officiel
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.crunchyroll.com/news/latest/2024/3/3/megan-thee-stallion-stuns-at-crunchyroll-anime-awards-2024"
+                                target="_blank" rel="noopener" class="bib-link">
+                                <span class="bib-source">Crunchyroll</span>
+                                Anime Awards Tokyo 2024
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/theestallion/" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">Instagram</span>
+                                @theestallion — Source primaire
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/theestallion" target="_blank" rel="noopener" class="bib-link">
+                                <span class="bib-source">Twitter / X</span>
+                                @theestallion — Source primaire
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.tiktok.com/@theestallion" target="_blank" rel="noopener"
+                                class="bib-link">
+                                <span class="bib-source">TikTok</span>
+                                @theestallion — Source primaire
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://petethomas.foundation" target="_blank" rel="noopener" class="bib-link">
+                                <span class="bib-source">Pete & Thomas</span>
+                                Foundation officielle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            {# Note de bas de bibliographie #}
+            <p class="mt-5 text-body-secondary"
+                style="font-size: 0.78rem; border-top: 1px solid #1e1e1e; padding-top: 1.5rem;">
+                Les images utilisées appartiennent à leurs auteurs respectifs et sont référencées à titre
+                illustratif uniquement.
+                Ce site est un projet éditorial indépendant, sans affiliation commerciale avec les artistes ou
+                labels cités.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════
+         FOOTER
+         ════════════════════════════════════════════════════════════ -->
+    <footer class="text-body-secondary py-5 bg-black border-top border-dark">
+        <div class="container">
+            <p class="float-end mb-1">
+                <a href="#" class="text-decoration-none" style="color:var(--megan-pink)">Haut de page</a>
+            </p>
+            <p class="mb-1">&copy; And if the beat live you know lil Juju made it.</p>
+            <p class="mb-0">Stew à la prod.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 900, easing: 'ease-out-cubic', once: true, offset: 120 });
+
+        function togglePlayer(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

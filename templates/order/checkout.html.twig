@@ -1,0 +1,352 @@
+{% extends 'base.html.twig' %}
+{% block title %}Récapitulatif · Megan Thee Stallion{% endblock %}
+
+{% block body %}
+<style>
+    .form-control-dark {
+        background: #0a0a0a;
+        border: 1px solid #2a2a2a;
+        color: white;
+        border-radius: 6px;
+    }
+
+    .form-control-dark:focus {
+        background: #0f0f0f;
+        border-color: var(--megan-pink);
+        color: white;
+        box-shadow: 0 0 0 3px rgba(255, 0, 80, 0.15);
+    }
+
+    .form-control-dark option {
+        background: #111;
+        color: white;
+    }
+
+    .checkout-address-form label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #555;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    .checkout-section {
+        background: radial-gradient(circle at top, #111, #000);
+        min-height: 100vh;
+        padding-top: 100px;
+        padding-bottom: 4rem;
+    }
+
+    .checkout-card {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .checkout-card-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #1e1e1e;
+        font-family: var(--font-headings);
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #666;
+    }
+
+    .checkout-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #0f0f0f;
+    }
+
+    .checkout-item:last-child { border-bottom: none; }
+
+    .checkout-item-img {
+        width: 56px;
+        height: 56px;
+        object-fit: cover;
+        border-radius: 6px;
+        flex-shrink: 0;
+    }
+
+    .checkout-item-placeholder {
+        width: 56px;
+        height: 56px;
+        border-radius: 6px;
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-headings);
+        font-size: 1rem;
+        color: var(--megan-pink);
+        opacity: 0.4;
+        flex-shrink: 0;
+    }
+
+    .checkout-item-name {
+        font-family: var(--font-headings);
+        font-size: 0.88rem;
+        color: white;
+        text-transform: uppercase;
+        margin: 0 0 2px;
+    }
+
+    .checkout-item-meta {
+        font-size: 0.72rem;
+        color: #555;
+        margin: 0;
+    }
+
+    .checkout-item-price {
+        margin-left: auto;
+        font-family: var(--font-headings);
+        font-size: 1rem;
+        color: var(--megan-pink);
+        white-space: nowrap;
+    }
+
+    .totals-block { padding: 1.2rem 1.5rem; }
+
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .total-row.ttc {
+        font-size: 1.1rem;
+        color: white;
+        font-weight: 600;
+        border-top: 1px solid #1e1e1e;
+        padding-top: 0.8rem;
+        margin-top: 0.4rem;
+    }
+
+    .total-row.ttc span:last-child {
+        font-family: var(--font-headings);
+        font-size: 1.5rem;
+        color: var(--megan-pink);
+    }
+
+    .btn-pay {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        width: 100%;
+        background: var(--gradient-megan);
+        border: none;
+        color: white;
+        font-family: var(--font-headings);
+        font-size: 1rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 16px;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 1.2rem;
+        transition: opacity 0.3s, box-shadow 0.3s;
+        box-shadow: 0 0 25px rgba(255, 0, 127, 0.45);
+    }
+
+    .btn-pay:hover {
+        opacity: 0.85;
+        color: white;
+        box-shadow: 0 0 35px rgba(255, 0, 127, 0.7);
+    }
+
+    .btn-back {
+        display: block;
+        text-align: center;
+        margin-top: 0.8rem;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: #555;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .btn-back:hover { color: var(--megan-pink); }
+
+    .stripe-mention {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
+        font-size: 0.7rem;
+        color: #444;
+        margin-top: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Sticky sur desktop pour que le récap reste visible en scrollant */
+    .summary-sticky {
+        position: sticky;
+        top: 76px;
+    }
+</style>
+
+<section class="checkout-section">
+    <div class="container">
+
+        <h2 class="section-title text-center mb-5" data-aos="fade-down">Récapitulatif</h2>
+
+        {# ── Le form englobe les DEUX colonnes pour que le bouton submit
+           de la colonne droite puisse soumettre les champs de la colonne gauche ── #}
+        {{ form_start(form, { attr: { class: 'checkout-address-form' } }) }}
+
+        <div class="row g-4 justify-content-center">
+
+            {# ════════════════════════════════
+               COLONNE GAUCHE — Adresse + Articles
+               ════════════════════════════════ #}
+            <div class="col-lg-7" data-aos="fade-right">
+
+                {# ── Formulaire adresse ── #}
+                <div class="checkout-card mb-4">
+                    <div class="checkout-card-header">Adresse de livraison</div>
+                    <div class="p-3">
+                        <div class="row g-3">
+
+                            <div class="col-6">
+                                {{ form_label(form.shippingFirstname) }}
+                                {{ form_widget(form.shippingFirstname, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingFirstname) }}
+                            </div>
+
+                            <div class="col-6">
+                                {{ form_label(form.shippingLastname) }}
+                                {{ form_widget(form.shippingLastname, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingLastname) }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form_label(form.shippingAddress) }}
+                                {{ form_widget(form.shippingAddress, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingAddress) }}
+                            </div>
+
+                            <div class="col-4">
+                                {{ form_label(form.shippingPostalCode) }}
+                                {{ form_widget(form.shippingPostalCode, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingPostalCode) }}
+                            </div>
+
+                            <div class="col-8">
+                                {{ form_label(form.shippingCity) }}
+                                {{ form_widget(form.shippingCity, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingCity) }}
+                            </div>
+
+                            <div class="col-12">
+                                {{ form_label(form.shippingCountry) }}
+                                {{ form_widget(form.shippingCountry, { attr: { class: 'form-control form-control-dark' } }) }}
+                                {{ form_errors(form.shippingCountry) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>{# /.checkout-card adresse #}
+
+                {# ── Liste des articles ── #}
+                <div class="checkout-card">
+                    <div class="checkout-card-header">Vos articles</div>
+
+                    {% for item in cartItems %}
+                        <div class="checkout-item">
+
+                            {% if item.project.image %}
+                                <img src="{{ asset('images/' ~ item.project.image) }}"
+                                     alt="{{ item.project.name }}"
+                                     class="checkout-item-img">
+                            {% else %}
+                                <div class="checkout-item-placeholder">
+                                    {{ item.project.name | upper | slice(0, 2) }}
+                                </div>
+                            {% endif %}
+
+                            <div>
+                                <p class="checkout-item-name">{{ item.project.name }}</p>
+                                <p class="checkout-item-meta">
+                                    {{ item.project.genre }} ·
+                                    qté {{ item.quantity }} ·
+                                    {{ item.project.price | number_format(2, ',', ' ') }} € HT/u
+                                </p>
+                            </div>
+
+                            <span class="checkout-item-price">
+                                {{ item.lineTotalTTC | number_format(2, ',', ' ') }} €
+                            </span>
+
+                        </div>
+                    {% endfor %}
+
+                    <div class="p-3">
+                        <a href="{{ path('app_cart_index') }}" class="btn-back" style="text-align:left;">
+                            ← Modifier le panier
+                        </a>
+                    </div>
+
+                </div>{# /.checkout-card articles #}
+
+            </div>{# /.col-lg-7 #}
+
+            {# ════════════════════════════════
+               COLONNE DROITE — Totaux + Payer
+               ════════════════════════════════ #}
+            <div class="col-lg-4" data-aos="fade-left">
+                <div class="checkout-card summary-sticky">
+                    <div class="checkout-card-header">Paiement</div>
+
+                    <div class="totals-block">
+
+                        <div class="total-row">
+                            <span>Sous-total HT</span>
+                            <span>{{ totalHT | number_format(2, ',', ' ') }} €</span>
+                        </div>
+                        <div class="total-row">
+                            <span>TVA</span>
+                            <span>{{ totalTVA | number_format(2, ',', ' ') }} €</span>
+                        </div>
+                        <div class="total-row ttc">
+                            <span>Total TTC</span>
+                            <span>{{ total | number_format(2, ',', ' ') }} €</span>
+                        </div>
+
+                        {# Bouton submit — soumet le form_start déclaré plus haut,
+                           valide l'adresse et redirige vers Stripe si tout est correct #}
+                        <button type="submit" class="btn-pay">
+                            🔒 Payer avec Stripe
+                        </button>
+
+                        <a href="{{ path('app_projet') }}" class="btn-back">
+                            Continuer mes achats
+                        </a>
+
+                        <p class="stripe-mention">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#444" viewBox="0 0 16 16">
+                                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+                            </svg>
+                            Paiement sécurisé par Stripe
+                        </p>
+
+                    </div>
+                </div>
+            </div>{# /.col-lg-4 #}
+
+        </div>{# /.row #}
+
+        {{ form_end(form) }}
+
+    </div>{# /.container #}
+</section>
+{% endblock %}

@@ -1,0 +1,503 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projets · Megan Thee Stallion{% endblock %}
+
+{% block body %}
+
+{# ════════════════════════════════════════════════════════════
+   CSS SPÉCIFIQUE À LA PAGE PROJETS
+   ════════════════════════════════════════════════════════════ #}
+<style>
+    .projects-section {
+        background: radial-gradient(circle at top, #111, #000);
+        padding-top: 100px; /* compense la navbar fixed */
+    }
+
+    /* ── En-tête de catégorie ── */
+    .category-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        margin-top: 3.5rem;
+    }
+
+    .category-label {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--megan-pink);
+        border: 1px solid var(--megan-pink);
+        padding: 3px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .category-title {
+        font-family: var(--font-headings);
+        font-size: 1.8rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 0;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .category-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(to right, #2a2a2a, transparent);
+    }
+
+    /* ════════════════════════════════
+       CARTE PROJET
+       ════════════════════════════════ */
+    .project-card {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .project-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 0 35px rgba(255, 0, 80, 0.2);
+        border-color: rgba(255, 0, 80, 0.4);
+    }
+
+    /* ── Zone image carrée ── */
+    .project-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        flex-shrink: 0;
+        background: #0a0a0a;
+    }
+
+    .project-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-img {
+        transform: scale(1.07);
+    }
+
+    .project-img-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+    }
+
+    .project-img-placeholder span {
+        font-family: var(--font-headings);
+        font-size: 4rem;
+        color: var(--megan-pink);
+        opacity: 0.2;
+    }
+
+    /* ── Overlay hover avec bouton play ── */
+    .project-hover-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.45);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        /* Ne pas bloquer les clics sur le spotify-panel quand visible */
+        pointer-events: none;
+    }
+
+    .project-card:hover .project-hover-overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Si le panel Spotify est visible, on masque l'overlay hover */
+    .project-img-wrapper:has(.spotify-panel.visible) .project-hover-overlay {
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+
+    .project-play-btn {
+        width: 62px;
+        height: 62px;
+        border-radius: 50%;
+        background: var(--gradient-megan);
+        border: none;
+        color: white;
+        font-size: 1.3rem;
+        cursor: pointer;
+        transform: scale(0.85);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 0 20px rgba(255, 0, 127, 0.6);
+        animation: pulse 2s infinite;
+    }
+
+    .project-card:hover .project-play-btn {
+        transform: scale(1);
+    }
+
+    .project-play-btn:hover {
+        transform: scale(1.1) !important;
+        box-shadow: 0 0 35px rgba(255, 0, 127, 0.9);
+    }
+
+    /* ── Player Spotify : slide du bas vers le haut DANS le cadre image ──
+       Même principe que .album-overlay dans app.css.
+       translateY(100%) = caché hors du cadre en bas.
+       translateY(0)    = visible dans le cadre.
+       L'overflow:hidden du parent (.project-img-wrapper) masque ce qui dépasse. ── */
+    .spotify-panel {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.93);
+        backdrop-filter: blur(10px);
+        padding: 14px 12px 10px;
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 10;
+    }
+
+    .spotify-panel.visible {
+        transform: translateY(0);
+    }
+
+    .spotify-panel iframe {
+        border-radius: 8px;
+        display: block;
+    }
+
+    .spotify-close {
+        display: block;
+        width: 100%;
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-align: center;
+        margin-top: 8px;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .spotify-close:hover { color: var(--megan-pink); }
+
+    /* ════════════════════════════════
+       CORPS DE LA CARTE
+       ════════════════════════════════ */
+    .project-body {
+        padding: 1.1rem 1.2rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 0.5rem;
+    }
+
+    .project-header-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .project-name {
+        font-family: var(--font-headings);
+        font-size: 1rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        line-height: 1.2;
+        margin: 0;
+    }
+
+    .project-year {
+        font-size: 0.7rem;
+        color: var(--megan-pink);
+        font-weight: 600;
+        letter-spacing: 1px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* Genre — petit et discret, juste sous le titre */
+    .project-genre {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #444;
+        margin: 0;
+    }
+
+    /* ── Description avec expand/collapse via max-height ──
+       On utilise max-height au lieu de -webkit-line-clamp
+       pour une transition CSS fiable dans tous les navigateurs. ── */
+    .project-description-wrapper { flex: 1; }
+
+    .project-description {
+        font-size: 0.82rem;
+        color: #888;
+        line-height: 1.65;
+        margin: 0 0 0.4rem;
+        overflow: hidden;
+        max-height: 5.4em;   /* ≈ 4 lignes */
+        transition: max-height 0.45s ease;
+    }
+
+    /* JS ajoute .expanded : la description se déploie entièrement */
+    .project-description.expanded {
+        max-height: 800px;   /* valeur assez grande pour couvrir n'importe quel texte */
+    }
+
+    .btn-read-more {
+        background: none;
+        border: none;
+        color: var(--megan-pink);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: opacity 0.2s;
+    }
+
+    .btn-read-more:hover { opacity: 0.7; }
+
+    .read-more-arrow {
+        display: inline-block;
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+
+    /* ── Pied de carte : prix + bouton panier ── */
+    .project-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        border-top: 1px solid #1e1e1e;
+        padding-top: 0.8rem;
+        margin-top: auto;
+    }
+
+    .project-price {
+        font-family: var(--font-headings);
+        font-size: 1.4rem;
+        color: var(--megan-pink);
+        line-height: 1;
+    }
+
+    .btn-cart {
+        background: transparent;
+        border: 1px solid var(--megan-pink);
+        color: var(--megan-pink);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 7px 14px;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        white-space: nowrap;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-cart:hover {
+        background: var(--gradient-megan);
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 0 20px rgba(255, 0, 127, 0.5);
+    }
+
+    .projects-empty {
+        color: #444;
+        text-align: center;
+        padding: 5rem 0;
+    }
+</style>
+
+{# ════════════════════════════════════════════════════════════
+   HTML
+   ════════════════════════════════════════════════════════════ #}
+<section class="projects-section pb-5" aria-label="Projets par catégorie">
+    <div class="container">
+
+        <h2 class="section-title text-center mb-2" data-aos="fade-down">Projets</h2>
+
+        {% for category in categories %}
+            {% if category.projects is not empty %}
+
+                <div class="category-header" data-aos="fade-right">
+                    <span class="category-label">Catégorie</span>
+                    <h3 class="category-title">{{ category.name }}</h3>
+                </div>
+
+                <div class="row g-4 mb-4">
+                    {% for project in category.projects %}
+                        <div class="col-12 col-sm-6 col-lg-4"
+                             data-aos="fade-up"
+                             data-aos-delay="{{ (loop.index0 % 3) * 80 }}">
+
+                            <article class="project-card">
+
+                                {# ── Zone image ── #}
+                                <div class="project-img-wrapper">
+
+                                    {% if project.image %}
+                                        <img src="{{ asset('images/' ~ project.image) }}"
+                                             alt="{{ project.name }}"
+                                             class="project-img"
+                                             loading="lazy">
+                                    {% else %}
+                                        <div class="project-img-placeholder">
+                                            <span>{{ project.name | upper | slice(0, 2) }}</span>
+                                        </div>
+                                    {% endif %}
+
+                                    {# Overlay + bouton play (uniquement si lien Spotify renseigné) #}
+                                    {% if project.spotifyEmbed %}
+                                        <div class="project-hover-overlay">
+                                            <button
+                                                class="project-play-btn"
+                                                onclick="toggleSpotify('spotify-{{ project.id }}')"
+                                                aria-label="Écouter {{ project.name }} sur Spotify">
+                                                ▶
+                                            </button>
+                                        </div>
+
+                                        {# Player Spotify : caché en bas, slide vers le haut au clic ▶ #}
+                                        <div class="spotify-panel" id="spotify-{{ project.id }}">
+                                            <iframe
+                                                src="{{ project.spotifyEmbed }}"
+                                                width="100%"
+                                                height="152"
+                                                frameborder="0"
+                                                allow="autoplay; encrypted-media"
+                                                loading="lazy"
+                                                title="{{ project.name }} sur Spotify">
+                                            </iframe>
+                                            <button
+                                                class="spotify-close"
+                                                onclick="toggleSpotify('spotify-{{ project.id }}')">
+                                                ✕ Fermer
+                                            </button>
+                                        </div>
+                                    {% endif %}
+
+                                </div>{# /.project-img-wrapper #}
+
+                                {# ── Corps ── #}
+                                <div class="project-body">
+
+                                    <div class="project-header-row">
+                                        <h4 class="project-name">{{ project.name }}</h4>
+                                        <span class="project-year">{{ project.year }}</span>
+                                    </div>
+
+                                    <p class="project-genre">{{ project.genre }}</p>
+
+                                    <div class="project-description-wrapper">
+                                        <p class="project-description" id="desc-{{ project.id }}">
+                                            {{ project.description | striptags }}
+                                        </p>
+                                        <button
+                                            class="btn-read-more"
+                                            onclick="toggleDesc('desc-{{ project.id }}', this)"
+                                            aria-expanded="false">
+                                            Lire plus <span class="read-more-arrow">↓</span>
+                                        </button>
+                                    </div>
+
+                                    <div class="project-footer">
+                                        <span class="project-price">
+                                            {{ project.price | number_format(2, ',', ' ') }} €
+                                        </span>
+                                        {# Route à créer — CartController::add() recevra l'id du projet #}
+                                        <a href="{{ path('app_cart_add', { id: project.id }) }}"
+                                           class="btn-cart"
+                                           aria-label="Ajouter {{ project.name }} au panier">
+                                            🛒 Ajouter
+                                        </a>
+                                    </div>
+
+                                </div>{# /.project-body #}
+                            </article>
+
+                        </div>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+        {% else %}
+            <p class="projects-empty">Aucun projet disponible pour le moment.</p>
+        {% endfor %}
+
+    </div>
+</section>
+
+{# ════════════════════════════════════════════════════════════
+   SCRIPTS
+   ════════════════════════════════════════════════════════════ #}
+<script>
+    /**
+     * toggleSpotify — Fait glisser le player Spotify dans le cadre image.
+     * Ajoute/retire .visible sur le .spotify-panel.
+     * Le CSS gère le slide : transform translateY(100% → 0).
+     * L'overflow:hidden du parent masque ce qui sort du cadre.
+     */
+    function toggleSpotify(panelId) {
+        const panel = document.getElementById(panelId);
+        if (panel) panel.classList.toggle('visible');
+    }
+
+    /**
+     * toggleDesc — Étend ou réduit une description via max-height.
+     * On ajoute/retire .expanded sur le <p>.
+     * Le CSS anime la transition de max-height (fiable sur tous les navigateurs).
+     */
+    function toggleDesc(descId, btn) {
+        const desc = document.getElementById(descId);
+        if (!desc) return;
+
+        const isExpanded = desc.classList.toggle('expanded');
+        const arrow = btn.querySelector('.read-more-arrow');
+
+        btn.setAttribute('aria-expanded', isExpanded);
+        // Met à jour le texte du bouton (le nœud texte est le premier enfant)
+        btn.firstChild.textContent = isExpanded ? 'Lire moins ' : 'Lire plus ';
+        if (arrow) arrow.style.transform = isExpanded ? 'rotate(180deg)' : 'rotate(0deg)';
+    }
+</script>
+
+{% endblock %}

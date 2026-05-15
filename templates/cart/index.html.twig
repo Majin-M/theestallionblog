@@ -1,0 +1,435 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier · Megan Thee Stallion{% endblock %}
+
+{% block body %}
+
+<style>
+    .cart-section {
+        background: radial-gradient(circle at top, #111, #000);
+        min-height: 100vh;
+        padding-top: 100px;
+        padding-bottom: 4rem;
+    }
+
+    /* ── Messages flash ── */
+    .flash-zone {
+        margin-bottom: 1.5rem;
+    }
+
+    /* ── Ligne article ── */
+    .cart-item {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        padding: 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        transition: border-color 0.3s ease;
+        margin-bottom: 1rem;
+    }
+
+    .cart-item:hover {
+        border-color: rgba(255, 0, 80, 0.3);
+    }
+
+    /* Miniature */
+    .cart-item-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        flex-shrink: 0;
+    }
+
+    .cart-item-placeholder {
+        width: 80px;
+        height: 80px;
+        border-radius: 8px;
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-family: var(--font-headings);
+        font-size: 1.4rem;
+        color: var(--megan-pink);
+        opacity: 0.3;
+    }
+
+    /* Infos texte */
+    .cart-item-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .cart-item-name {
+        font-family: var(--font-headings);
+        font-size: 0.95rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 0 0 0.2rem;
+        /* Empêche le débordement sur les longs titres */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .cart-item-genre {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #444;
+        margin: 0;
+    }
+
+    .cart-item-unit-price {
+        font-size: 0.78rem;
+        color: #666;
+        margin-top: 0.2rem;
+    }
+
+    /* Contrôles quantité */
+    .qty-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .qty-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #333;
+        background: transparent;
+        color: white;
+        font-size: 1rem;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 0.2s, background 0.2s;
+        text-decoration: none;
+    }
+
+    .qty-btn:hover {
+        border-color: var(--megan-pink);
+        background: rgba(255, 0, 80, 0.1);
+        color: white;
+    }
+
+    .qty-value {
+        font-family: var(--font-headings);
+        font-size: 1.1rem;
+        color: white;
+        min-width: 24px;
+        text-align: center;
+    }
+
+    /* Prix de la ligne */
+    .cart-item-total {
+        font-family: var(--font-headings);
+        font-size: 1.1rem;
+        color: var(--megan-pink);
+        flex-shrink: 0;
+        min-width: 80px;
+        text-align: right;
+    }
+
+    /* Bouton supprimer */
+    .btn-remove {
+        background: none;
+        border: none;
+        color: #444;
+        font-size: 1.1rem;
+        cursor: pointer;
+        flex-shrink: 0;
+        transition: color 0.2s;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+    }
+
+    .btn-remove:hover {
+        color: #ff3b3b;
+    }
+
+    /* ── Récapitulatif commande ── */
+    .order-summary {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 10px;
+        padding: 1.5rem;
+        position: sticky;
+        top: 76px;
+        /* colle sous la navbar */
+    }
+
+    .order-summary-title {
+        font-family: var(--font-headings);
+        font-size: 1.1rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px solid #1e1e1e;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.6rem;
+        font-size: 0.85rem;
+        color: #888;
+    }
+
+    .summary-row.total {
+        border-top: 1px solid #1e1e1e;
+        padding-top: 0.8rem;
+        margin-top: 0.8rem;
+        font-size: 1rem;
+        color: white;
+        font-weight: 600;
+    }
+
+    .summary-row.total .summary-amount {
+        font-family: var(--font-headings);
+        font-size: 1.5rem;
+        color: var(--megan-pink);
+    }
+
+    /* Bouton commander */
+    .btn-checkout {
+        display: block;
+        width: 100%;
+        background: var(--gradient-megan);
+        border: none;
+        color: white;
+        font-family: var(--font-headings);
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        padding: 14px;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 1.2rem;
+        text-align: center;
+        text-decoration: none;
+        transition: opacity 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 0 20px rgba(255, 0, 127, 0.4);
+    }
+
+    .btn-checkout:hover {
+        opacity: 0.85;
+        color: white;
+        box-shadow: 0 0 30px rgba(255, 0, 127, 0.7);
+    }
+
+    /* Bouton vider le panier */
+    .btn-clear {
+        display: block;
+        width: 100%;
+        background: transparent;
+        border: 1px solid #333;
+        color: #666;
+        font-size: 0.72rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        padding: 10px;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 0.6rem;
+        text-align: center;
+        text-decoration: none;
+        transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-clear:hover {
+        border-color: #ff3b3b;
+        color: #ff3b3b;
+    }
+
+    /* ── Panier vide ── */
+    .cart-empty {
+        text-align: center;
+        padding: 5rem 1rem;
+        color: #444;
+    }
+
+    .cart-empty i {
+        font-size: 4rem;
+        display: block;
+        margin-bottom: 1rem;
+        color: #222;
+    }
+
+    .cart-empty p {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<section class="cart-section">
+    <div class="container">
+
+        <h2 class="section-title text-center mb-5" data-aos="fade-down">Mon Panier</h2>
+
+        {# ── Messages flash (ajout, suppression, vidage) ── #}
+        <div class="flash-zone">
+            {% for type, messages in app.flashes %}
+            {% for message in messages %}
+            <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+            {% endfor %}
+        </div>
+
+        {% if cartItems is empty %}
+
+        {# ── Panier vide ── #}
+        <div class="cart-empty" data-aos="fade-up">
+            <i class="bi bi-bag-x"></i>
+            <p>Votre panier est vide.</p>
+            <a href="{{ path('app_projet') }}" class="btn btn-megan">
+                Découvrir les projets
+            </a>
+        </div>
+
+        {% else %}
+
+        <div class="row g-4">
+
+            {# ════════════════════════
+            COLONNE GAUCHE — Articles
+            ════════════════════════ #}
+            <div class="col-lg-8" data-aos="fade-right">
+
+                {% for item in cartItems %}
+                <div class="cart-item">
+
+                    {# Miniature #}
+                    {% if item.project.image %}
+                    <img src="{{ asset('images/' ~ item.project.image) }}" alt="{{ item.project.name }}"
+                        class="cart-item-img">
+                    {% else %}
+                    <div class="cart-item-placeholder">
+                        {{ item.project.name | upper | slice(0, 2) }}
+                    </div>
+                    {% endif %}
+
+                    {# Infos #}
+                    <div class="cart-item-info">
+                        <h5 class="cart-item-name">{{ item.project.name }}</h5>
+                        <p class="cart-item-genre">{{ item.project.genre }}</p>
+                        <p class="cart-item-unit-price">
+                            {{ item.project.price | number_format(2, ',', ' ') }} € / unité
+                            <span style="color:#555; margin-left:4px;">
+                                (TVA {{ item.project.tva }}%)
+                            </span>
+                        </p>
+                    </div>
+
+                    {# Contrôles quantité : − QTÉ + #}
+                    <div class="qty-controls">
+                        <a href="{{ path('app_cart_decrease', { id: item.project.id }) }}" class="qty-btn"
+                            aria-label="Diminuer la quantité">−</a>
+                        <span class="qty-value">{{ item.quantity }}</span>
+                        <a href="{{ path('app_cart_add', { id: item.project.id }) }}" class="qty-btn"
+                            aria-label="Augmenter la quantité">+</a>
+                    </div>
+
+                    {# Total TTC de la ligne #}
+                    <div class="cart-item-total">
+                        {{ item.lineTotalTTC | number_format(2, ',', ' ') }} €
+                    </div>
+
+                    {# Bouton supprimer l'article #}
+                    <a href="{{ path('app_cart_remove', { id: item.project.id }) }}" class="btn-remove"
+                        aria-label="Retirer {{ item.project.name }} du panier" title="Retirer du panier">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+
+                </div>{# /.cart-item #}
+                {% endfor %}
+
+                {# Lien retour aux projets #}
+                <div class="mt-3">
+                    <a href="{{ path('app_projet') }}" class="text-decoration-none"
+                        style="color:#555; font-size:0.8rem; letter-spacing:1px; text-transform:uppercase;">
+                        ← Continuer mes achats
+                    </a>
+                </div>
+
+            </div>{# /.col-lg-8 #}
+
+            {# ════════════════════════
+            COLONNE DROITE — Récap
+            ════════════════════════ #}
+            <div class="col-lg-4" data-aos="fade-left">
+                <div class="order-summary">
+
+                    <p class="order-summary-title">Récapitulatif</p>
+
+                    {# Détail par article #}
+                    {% for item in cartItems %}
+                    <div class="summary-row">
+                        <span>
+                            {{ item.project.name | slice(0, 20) }}{% if item.project.name | length > 20 %}…{% endif %}
+                            × {{ item.quantity }}
+                        </span>
+                        <span>{{ item.lineTotalTTC | number_format(2, ',', ' ') }} €</span>
+                    </div>
+                    {% endfor %}
+
+                    {# Total HT #}
+                    {% set totalHT = 0 %}
+                    {% for item in cartItems %}
+                    {% set totalHT = totalHT + item.lineTotal %}
+                    {% endfor %}
+
+                    <div class="summary-row" style="margin-top:0.5rem;">
+                        <span>Sous-total HT</span>
+                        <span>{{ totalHT | number_format(2, ',', ' ') }} €</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>TVA</span>
+                        <span>{{ (total - totalHT) | number_format(2, ',', ' ') }} €</span>
+                    </div>
+
+                    {# Total TTC #}
+                    <div class="summary-row total">
+                        <span>Total TTC</span>
+                        <span class="summary-amount">{{ total | number_format(2, ',', ' ') }} €</span>
+                    </div>
+
+                    {# Bouton commander — route à créer plus tard #}
+                    <a href="{{ path('app_order_checkout') }}" class="btn-checkout">Commander</a>
+                    Commander
+                    </a>
+
+                    {# Vider le panier #}
+                    <a href="{{ path('app_cart_clear') }}" class="btn-clear">
+                        🗑 Vider le panier
+                    </a>
+
+                </div>
+            </div>{# /.col-lg-4 #}
+
+        </div>{# /.row #}
+
+        {% endif %}
+
+    </div>
+</section>
+
+{% endblock %}

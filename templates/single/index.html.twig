@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SingleController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper {
+        margin: 1em auto;
+        max-width: 800px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+
+    .example-wrapper code {
+        background: #F5F5F5;
+        padding: 2px 6px;
+    }
+</style>
+
+<!-- ────────────────────────────────────────────────────────
+             HITS — Singles avec player Spotify masqué
+             Le bouton ▶ appelle togglePlayer(id) pour afficher
+             l'iframe correspondant au morceau.
+             IMPORTANT : chaque <div id="..."> doit être unique.
+             ──────────────────────────────────────────────────────── -->
+<section id="hits" class="hits-section py-5" aria-label="Singles et hits">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Hits</h2>
+
+        <div class="row g-4">
+            {# ── Single : WAP ── #}
+            <div class="col-md-4" data-aos="fade-right" data-aos-delay="100">
+                <div class="hit-card" data-title="WAP"
+                    data-src="https://open.spotify.com/embed/track/4Oun2ylbjFKMPTiaSbbCih?utm_source=generator">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/884908fd2fd1ea7fb6f98a5b345ad7d8/1900x1900-000000-80-0-0.jpg"
+                        alt="WAP">
+                    <div class="hit-overlay">
+                        <h3>WAP</h3>
+                        <span>Iconic. Viral. Unfiltered.</span>
+                        <button onclick="togglePlayer('player-wap')" class="play-btn"
+                            aria-label="Écouter WAP">▶</button>
+                    </div>
+                    <div class="spotify-slot"></div>
+                </div>
+            </div>
+
+            {# ── Single : Savage ── #}
+            <div class="col-md-4" data-aos="fade-left" data-aos-delay="200">
+                <div class="hit-card">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/83eb274da4ab414aaba38536f79a1f97/1900x1900-000000-81-0-0.jpg"
+                        alt="Savage">
+                    <div class="hit-overlay">
+                        <h3>Savage</h3>
+                        <div id="player-savage" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/55CHeLEfn5iJ0IIkgaa4si?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Savage sur Spotify"></iframe>
+                        </div>
+                        <span>Hot Girl Summer Anthem</span>
+                        <button onclick="togglePlayer('player-savage')" class="play-btn"
+                            aria-label="Écouter Savage">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Body ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="250">
+                <div class="hit-card small">
+                    <img src="https://images.genius.com/d30190e9e0a78f306b4ee9a9c6dcb8ab.1000x1000x1.png" alt="Body">
+                    <div class="hit-overlay">
+                        <h3>Body</h3>
+                        <div id="player-body" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/0A1hoCfMLkiAgvhWkkucJa?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Body sur Spotify"></iframe>
+                        </div>
+                        <span>Chart Top 1 Hit</span>
+                        <button onclick="togglePlayer('player-body')" class="play-btn"
+                            aria-label="Écouter Body">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Thot Shit ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="hit-card small">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/9288660d777d636b9dcbf63b1c99fd93/0x1900-000000-80-0-0.jpg"
+                        alt="Thot Shit">
+                    <div class="hit-overlay">
+                        <h3>Thot Shit</h3>
+                        <div id="player-thot" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/5zNW5ARjYhJQJz1AChP33n?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Thot Shit sur Spotify"></iframe>
+                        </div>
+                        <span>Certified Platinum</span>
+                        <button onclick="togglePlayer('player-thot')" class="play-btn"
+                            aria-label="Écouter Thot Shit">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Hiss ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="350">
+                <div class="hit-card small">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/5f54a31eeabcac414cbfcc965f0f1135/1900x1900-000000-81-0-0.jpg"
+                        alt="Hiss">
+                    <div class="hit-overlay">
+                        <h3>Hiss</h3>
+                        <div id="player-hiss" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/4YGJukkshUUGIqzBUa5G1u?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Hiss sur Spotify"></iframe>
+                        </div>
+                        <button onclick="togglePlayer('player-hiss')" class="play-btn"
+                            aria-label="Écouter Hiss">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Cobra ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+                <div class="hit-card small">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/9505faa33b12e44f9afc3e57def6b9f0/0x1900-000000-80-0-0.jpg"
+                        alt="Cobra">
+                    <div class="hit-overlay">
+                        <h3>Cobra</h3>
+                        <div id="player-cobra" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/3Kh8X9lHztqVBTgw30HbXn?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Cobra sur Spotify"></iframe>
+                        </div>
+                        <span>Chart Top 1 Hit</span>
+                        <button onclick="togglePlayer('player-cobra')" class="play-btn"
+                            aria-label="Écouter Cobra">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Boa (GIF cover) ── #}
+            <div class="col-md-4" data-aos="fade-left" data-aos-delay="500">
+                <div class="hit-card small">
+                    <img src="https://images.genius.com/eda0923e5cd9d217a88332a70ece4a90.600x600x165.gif" alt="Boa"
+                        style="object-fit:cover; width:100%; height:100%;">
+                    <div class="hit-overlay">
+                        <h3>Boa</h3>
+                        <div id="player-boa" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/3tUwmCcdunuXKwHu8u2aBn?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Boa sur Spotify"></iframe>
+                        </div>
+                        <span>Deep Cut. Emotional.</span>
+                        <button onclick="togglePlayer('player-boa')" class="play-btn"
+                            aria-label="Écouter Boa">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Anxiety ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+                <div class="hit-card">
+                    <img src="https://cdn-images.dzcdn.net/images/cover/e77b162b10e0d0c07e2810269750ecdf/1900x1900-000000-80-0-0.jpg"
+                        alt="Anxiety">
+                    <div class="hit-overlay">
+                        <h3>Anxiety</h3>
+                        <div id="player-anxiety" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/6Ve9MNsl8OFg6rHd227bYh?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Anxiety sur Spotify"></iframe>
+                        </div>
+                        <span>Deep Cut. Emotional.</span>
+                        <button onclick="togglePlayer('player-anxiety')" class="play-btn"
+                            aria-label="Écouter Anxiety">▶</button>
+                    </div>
+                </div>
+            </div>
+
+            {# ── Single : Captain Hook ── #}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="700">
+                <div class="hit-card">
+                    <img src="https://i1.sndcdn.com/artworks-dFgwX7t7Im5D11A1-QEzIqA-t1080x1080.jpg" alt="Captain Hook">
+                    <div class="hit-overlay">
+                        <h3>Captain Hook</h3>
+                        <div id="player-hook" style="display:none;">
+                            <iframe style="border-radius:12px; margin-top:10px"
+                                src="https://open.spotify.com/embed/track/4R2kfaDFGUsAtJQx0RgMOo?utm_source=generator"
+                                width="100%" height="80" frameborder="0" allow="autoplay; encrypted-media"
+                                loading="lazy" title="Captain Hook sur Spotify"></iframe>
+                        </div>
+                        <span>Viral Flow</span>
+                        <button onclick="togglePlayer('player-hook')" class="play-btn"
+                            aria-label="Écouter Captain Hook">▶</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>{# /.row — hits #}
+    </div>
+</section>
+
+{% endblock %}

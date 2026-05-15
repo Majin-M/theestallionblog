@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+{% block title %}Paiement annulé · Megan Thee Stallion{% endblock %}
+
+{% block body %}
+<style>
+    .cancel-section {
+        background: radial-gradient(circle at top, #111, #000);
+        min-height: 100vh;
+        padding-top: 100px;
+        display: flex;
+        align-items: center;
+    }
+
+    .cancel-box {
+        background: #111;
+        border: 1px solid #1e1e1e;
+        border-radius: 14px;
+        padding: 3rem 2rem;
+        text-align: center;
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    .cancel-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: #1a1a1a;
+        border: 2px solid #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        color: #555;
+    }
+
+    .cancel-title {
+        font-family: var(--font-headings);
+        font-size: 2rem;
+        color: white;
+        text-transform: uppercase;
+        margin-bottom: 0.5rem;
+    }
+
+    .cancel-subtitle {
+        color: #666;
+        font-size: 0.88rem;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+</style>
+
+<section class="cancel-section">
+    <div class="container">
+        <div class="cancel-box" data-aos="fade-up">
+
+            <div class="cancel-icon">✕</div>
+
+            <h1 class="cancel-title">Paiement annulé</h1>
+            <p class="cancel-subtitle">
+                Vous avez annulé le paiement.<br>
+                Votre panier est conservé, vous pouvez réessayer quand vous le souhaitez.
+            </p>
+
+            <a href="{{ path('app_cart_index') }}" class="btn btn-megan w-100 mb-3">
+                Retourner au panier
+            </a>
+
+            <a href="{{ path('app_projet') }}"
+               class="d-block text-center text-decoration-none"
+               style="font-size:0.75rem; color:#555; letter-spacing:1px; text-transform:uppercase;">
+                Continuer mes achats
+            </a>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

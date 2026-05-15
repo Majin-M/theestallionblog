@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+<div class="auth-container">
+    <div class="auth-card">
+
+        <h1 class="auth-title">Join the Hotties</h1>
+        <p class="auth-subtitle">Create your account</p>
+
+        {{ form_start(register) }}
+
+        <div class="row">
+            <div class="col-md-6">
+                {{ form_row(register.firstname) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_row(register.lastname) }}
+            </div>
+        </div>
+
+        {{ form_row(register.email) }}
+
+        {{ form_row(register.plainPassword.first) }}
+        {{ form_row(register.plainPassword.second) }}
+
+        <button class="btn auth-btn">
+            Sign up
+        </button>
+
+        {{ form_end(register) }}
+
+    </div>
+</div>
+
+{% endblock %}
